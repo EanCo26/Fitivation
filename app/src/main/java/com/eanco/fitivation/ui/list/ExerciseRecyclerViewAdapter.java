@@ -1,4 +1,4 @@
-package com.eanco.fitivation.ui.list.exercise;
+package com.eanco.fitivation.ui.list;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,14 +9,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.eanco.fitivation.R;
-import com.eanco.fitivation.model.Exercise;
+import com.eanco.fitivation.dal.model.exercise.Exercise;
 
 import org.apache.commons.collections4.ListUtils;
 
 import java.util.List;
 
 public class ExerciseRecyclerViewAdapter extends RecyclerView.Adapter<ExerciseRecyclerViewAdapter.ExerciseViewHolder> {
-
     private List<Exercise> exercises;
 
     public ExerciseRecyclerViewAdapter(List<Exercise> exercises) {
@@ -33,8 +32,7 @@ public class ExerciseRecyclerViewAdapter extends RecyclerView.Adapter<ExerciseRe
 
     @Override
     public void onBindViewHolder(@NonNull ExerciseRecyclerViewAdapter.ExerciseViewHolder holder, int position) {
-        holder.getNameTextView().setText(exercises.get(position).getExerciseDetail().getName());
-        holder.getGoalTextView().setText(exercises.get(position).getExerciseDetail().getUnit());
+        holder.getNameTextView().setText(exercises.get(position).getName());
     }
 
     @Override

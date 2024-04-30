@@ -1,4 +1,4 @@
-package com.eanco.fitivation.dal.dao;
+package com.eanco.fitivation.dal.dao.exercise;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
@@ -8,8 +8,8 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import com.eanco.fitivation.dal.model.ExerciseDetail;
-import com.eanco.fitivation.dal.model.ExerciseResult;
+import com.eanco.fitivation.dal.dao.IDao;
+import com.eanco.fitivation.dal.model.exercise.ExerciseDetail;
 
 import java.util.List;
 
@@ -17,10 +17,10 @@ import java.util.List;
 public interface ExerciseDetailDao extends IDao<ExerciseDetail> {
 
     @Query("SELECT * FROM ExerciseDetail " +
-            "ORDER BY exerciseDetailsUid ASC")
+            "ORDER BY uid ASC")
     LiveData<List<ExerciseDetail>> getAll();
     @Query("SELECT * FROM ExerciseDetail " +
-            "ORDER BY exerciseDetailsUid, origUpdateTime ASC")
+            "ORDER BY uid, origUpdateTime ASC")
     LiveData<List<ExerciseDetail>> getLatest();
     @Insert
     void insertAll(List<ExerciseDetail> exerciseDetails);

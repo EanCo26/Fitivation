@@ -6,37 +6,49 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 
 import com.eanco.fitivation.dal.FitivationRepository;
-import com.eanco.fitivation.dal.model.ExerciseDetail;
-import com.eanco.fitivation.dal.model.ExerciseResult;
-import com.eanco.fitivation.model.Exercise;
-import com.eanco.fitivation.ui.list.exercise.ExerciseRecyclerViewAdapter;
+import com.eanco.fitivation.dal.model.exercise.Exercise;
 
 import org.apache.commons.lang3.ObjectUtils;
 
-import java.util.Collections;
 import java.util.List;
 
 public class HomeViewModel extends AndroidViewModel {
 
     private final LiveData<List<Exercise>> exercises;
-    private final LiveData<List<ExerciseDetail>> exerciseDetails;
-    private final LiveData<List<ExerciseResult>> exerciseResults;
 
     public HomeViewModel(@NonNull Application application) {
         super(application);
 
-        exerciseDetails = FitivationRepository.getAll(ExerciseDetail.class);
-        exerciseResults = FitivationRepository.getLatest(ExerciseResult.class);
-
-        setExercises(exerciseDetails.getValue(), exerciseResults.getValue());
+        exercises = new MutableLiveData<>();
+//        exerciseDetails = FitivationRepository.getAll(ExerciseDetail.class);
+//        exerciseLatestResults = FitivationRepository.getLatest(ExerciseResult.class);
+//        exercises = FitivationRepository.getLatest(Exercise.class);
+//        buildExercises(exerciseDetails.getValue(), exerciseLatestResults.getValue());
     }
 
-    private void setExercises(List<ExerciseDetail> details, List<ExerciseResult> results) {
-        return ObjectUtils.isNotEmpty(exercises) ? exercises : new MutableLiveData<>();
-    }
+//    public LiveData<List<ExerciseDetail>> getExerciseDetails() {
+//        return ObjectUtils.isNotEmpty(exerciseDetails) ? exerciseDetails : new MutableLiveData<>();
+//    }
+//
+//    public LiveData<List<ExerciseResult>> getLatestExerciseResults() {
+//        return ObjectUtils.isNotEmpty(exerciseLatestResults) ? exerciseLatestResults : new MutableLiveData<>();
+//    }
+
+//    public void buildExercises(List<ExerciseDetail> details, List<ExerciseResult> results) {
+//        List<Exercise> genExerciseList = new ArrayList<>();
+//        for (ExerciseDetail detail: CollectionUtils.emptyIfNull(details)) {
+//            CollectionUtils.emptyIfNull(results).stream()
+//                    .distinct()
+//                    .filter(r -> detail.getUid() == r.getExerciseDetailUid())
+//                    .forEach(r -> {
+//                        Exercise exercise = new Exercise(detail, r);
+//                        genExerciseList.add(exercise);
+//                    });
+//        }
+//        exercises.setValue(genExerciseList);
+//    }
 
     public LiveData<List<Exercise>> getExercises() {
         return ObjectUtils.isNotEmpty(exercises) ? exercises : new MutableLiveData<>();

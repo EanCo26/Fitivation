@@ -4,13 +4,14 @@ import androidx.annotation.NonNull;
 
 import com.eanco.fitivation.converter.DateTimeConverter;
 
-public abstract class DaoModel {
+public abstract class RoomModel {
     protected @NonNull String updateTime;
     protected @NonNull String origUpdateTime;
 
-    public DaoModel() {
-        this.updateTime = DateTimeConverter.milliToDatetimeStr(System.currentTimeMillis());
-        this.origUpdateTime = DateTimeConverter.milliToDatetimeStr(System.currentTimeMillis());
+    public RoomModel() {
+        String ts = DateTimeConverter.milliToDatetimeStr(System.currentTimeMillis());
+        this.updateTime = ts;
+        this.origUpdateTime = ts;
     }
 
     @NonNull

@@ -1,14 +1,12 @@
-package com.eanco.fitivation.dal.model;
+package com.eanco.fitivation.dal.model.exercise;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
-import androidx.room.PrimaryKey;
+
+import com.eanco.fitivation.dal.model.EntityModel;
 
 @Entity
-public class ExerciseDetail extends DaoModel {
-
-    @PrimaryKey(autoGenerate = true)
-    public int exerciseDetailsUid;
+public class ExerciseDetail extends EntityModel {
     private String name;
     private String unit;
 
