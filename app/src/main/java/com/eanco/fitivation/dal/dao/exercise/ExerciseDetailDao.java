@@ -8,20 +8,17 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import com.eanco.fitivation.dal.dao.IDao;
+import com.eanco.fitivation.dal.dao.IWriteDao;
 import com.eanco.fitivation.dal.model.exercise.ExerciseDetail;
 
 import java.util.List;
 
 @Dao
-public interface ExerciseDetailDao extends IDao<ExerciseDetail> {
+public interface ExerciseDetailDao extends IWriteDao<ExerciseDetail> {
 
     @Query("SELECT * FROM ExerciseDetail " +
             "ORDER BY uid ASC")
     LiveData<List<ExerciseDetail>> getAll();
-    @Query("SELECT * FROM ExerciseDetail " +
-            "ORDER BY uid, origUpdateTime ASC")
-    LiveData<List<ExerciseDetail>> getLatest();
     @Insert
     void insertAll(List<ExerciseDetail> exerciseDetails);
     @Update(onConflict = OnConflictStrategy.ABORT)

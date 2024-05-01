@@ -1,17 +1,28 @@
 package com.eanco.fitivation.dal.model;
 
 import androidx.annotation.NonNull;
+import androidx.room.Ignore;
 
 import com.eanco.fitivation.converter.DateTimeConverter;
 
-public abstract class RoomModel {
+public abstract class ReadModel {
+    @Ignore
+    private Boolean isSelected;
     protected @NonNull String updateTime;
     protected @NonNull String origUpdateTime;
 
-    public RoomModel() {
+    public ReadModel() {
         String ts = DateTimeConverter.milliToDatetimeStr(System.currentTimeMillis());
+        this.isSelected = false;
         this.updateTime = ts;
         this.origUpdateTime = ts;
+    }
+
+    public Boolean getSelected() {
+        return isSelected;
+    }
+    public void setSelected(Boolean selected) {
+        isSelected = selected;
     }
 
     @NonNull

@@ -1,11 +1,13 @@
 package com.eanco.fitivation.dal;
 
 import android.content.Context;
+import android.provider.MediaStore;
 
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
+import com.eanco.fitivation.dal.dao.exercise.ExerciseDao;
 import com.eanco.fitivation.dal.dao.exercise.ExerciseDetailDao;
 import com.eanco.fitivation.dal.dao.exercise.ExerciseResultDao;
 import com.eanco.fitivation.dal.model.exercise.Exercise;
@@ -18,7 +20,7 @@ import java.util.concurrent.Executors;
 @Database(
         entities = {ExerciseDetail.class, ExerciseResult.class},
         views = {Exercise.class},
-        version = 11,
+        version = 16,
         exportSchema = false)
 public abstract class FitivationDatabase extends RoomDatabase {
 
@@ -28,7 +30,7 @@ public abstract class FitivationDatabase extends RoomDatabase {
 
     public abstract ExerciseDetailDao exerciseDetailDao();
     public abstract ExerciseResultDao exerciseResultDao();
-//    public abstract ExerciseDao exerciseDao();
+    public abstract ExerciseDao exerciseDao();
 
     public static FitivationDatabase init(Context context) {
         if(sInstance == null){
