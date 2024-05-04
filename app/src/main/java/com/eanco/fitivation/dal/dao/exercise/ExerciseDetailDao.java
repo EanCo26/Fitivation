@@ -9,7 +9,7 @@ import androidx.room.Query;
 import androidx.room.Update;
 
 import com.eanco.fitivation.dal.dao.IWriteDao;
-import com.eanco.fitivation.dal.model.exercise.ExerciseDetail;
+import com.eanco.fitivation.ddl.model.exercise.ExerciseDetail;
 
 import java.util.List;
 

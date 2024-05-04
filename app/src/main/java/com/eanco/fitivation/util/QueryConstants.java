@@ -7,9 +7,7 @@ public class QueryConstants {
                     "ed.uid AS exerciseDetailUid, " +
                     "ed.name, " +
                     "ed.unit, " +
-                    "ed.startAmount, " +
-                    "ed.increaseRate, " +
-                    "er.achievedAmount, " +
+                    "ed.amount, " +
                     "er.origUpdateTime, " +
                     "er.updateTime " +
             "FROM ExerciseDetail ed " +

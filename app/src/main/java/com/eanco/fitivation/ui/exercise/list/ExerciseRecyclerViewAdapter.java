@@ -10,16 +10,16 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.eanco.fitivation.R;
-import com.eanco.fitivation.dal.model.exercise.Exercise;
+import com.eanco.fitivation.ddl.model.exercise.ExerciseDetail;
 
 import org.apache.commons.collections4.ListUtils;
 
 import java.util.List;
 
 public class ExerciseRecyclerViewAdapter extends RecyclerView.Adapter<ExerciseRecyclerViewAdapter.ViewHolder> {
-    private List<Exercise> exercises;
+    private List<ExerciseDetail> exercises;
 
-    public ExerciseRecyclerViewAdapter(List<Exercise> exercises) {
+    public ExerciseRecyclerViewAdapter(List<ExerciseDetail> exercises) {
         this.exercises = ListUtils.emptyIfNull(exercises);
     }
 
@@ -33,7 +33,7 @@ public class ExerciseRecyclerViewAdapter extends RecyclerView.Adapter<ExerciseRe
 
     @Override
     public void onBindViewHolder(@NonNull ExerciseRecyclerViewAdapter.ViewHolder holder, int position) {
-        Exercise exercise = exercises.get(position);
+        ExerciseDetail exercise = exercises.get(position);
 
         holder.getItem().setOnClickListener(item -> {
             exercise.setSelected(!exercise.getSelected());
@@ -41,7 +41,7 @@ public class ExerciseRecyclerViewAdapter extends RecyclerView.Adapter<ExerciseRe
         });
 
         holder.getNameTextView().setText(exercise.getName());
-        holder.getGoalUnitTextView().setText(exercise.getCurrentTargetAmount() + " : " + exercise.getUnit());
+        holder.getGoalUnitTextView().setText(exercise.getTargetAmount() + " " + exercise.getUnit());
         holder.getSelectRadioButton().setChecked(Boolean.TRUE.equals(exercise.getSelected()));
     }
 

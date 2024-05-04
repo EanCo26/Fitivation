@@ -10,8 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.eanco.fitivation.R;
-import com.eanco.fitivation.dal.model.exercise.Exercise;
-import com.eanco.fitivation.dal.model.exercise.ExerciseDetail;
+import com.eanco.fitivation.ddl.model.exercise.ExerciseDetail;
 
 import org.apache.commons.collections4.ListUtils;
 
@@ -28,7 +27,7 @@ public class PlaylistRecyclerViewAdapter extends RecyclerView.Adapter<PlaylistRe
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_exercise_item, parent, false);
+                .inflate(R.layout.fragment_playlist_item, parent, false);
         return new ViewHolder(view);
     }
 

@@ -1,31 +1,16 @@
 package com.eanco.fitivation;
 
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.LiveData;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-import androidx.room.Room;
 
-import com.eanco.fitivation.converter.DateTimeConverter;
-import com.eanco.fitivation.dal.FitivationDatabase;
-import com.eanco.fitivation.dal.FitivationRepository;
-import com.eanco.fitivation.dal.model.exercise.ExerciseDetail;
-import com.eanco.fitivation.dal.model.exercise.ExerciseResult;
+import com.eanco.fitivation.ddl.FitivationDatabase;
 import com.eanco.fitivation.databinding.ActivityMainBinding;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import org.apache.commons.collections4.CollectionUtils;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 

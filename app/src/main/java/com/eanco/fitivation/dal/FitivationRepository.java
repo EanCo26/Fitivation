@@ -4,8 +4,9 @@ import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
-import com.eanco.fitivation.dal.model.ReadModel;
-import com.eanco.fitivation.dal.model.ReadWriteModel;
+import com.eanco.fitivation.ddl.model.ReadModel;
+import com.eanco.fitivation.ddl.model.ReadWriteModel;
+import com.eanco.fitivation.ddl.FitivationDatabase;
 
 import java.util.List;
 
@@ -13,10 +14,6 @@ public class FitivationRepository {
 
     public static <T> LiveData<List<T>> getAll(Class<? extends ReadModel> dbClass) {
         return DaoMapReduce.getReadDao(dbClass).getAll();
-    }
-
-    public static <T> LiveData<List<T>> getLatest(Class<? extends ReadModel> dbClass) {
-        return DaoMapReduce.getReadDao(dbClass).getLatest();
     }
 
     public static <T> void insertAll(Class<? extends ReadWriteModel> dbClass, List<T> entities) {

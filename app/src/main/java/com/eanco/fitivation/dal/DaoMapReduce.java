@@ -2,11 +2,11 @@ package com.eanco.fitivation.dal;
 
 import com.eanco.fitivation.dal.dao.IDao;
 import com.eanco.fitivation.dal.dao.IWriteDao;
-import com.eanco.fitivation.dal.model.ReadWriteModel;
-import com.eanco.fitivation.dal.model.ReadModel;
-import com.eanco.fitivation.dal.model.exercise.Exercise;
-import com.eanco.fitivation.dal.model.exercise.ExerciseDetail;
-import com.eanco.fitivation.dal.model.exercise.ExerciseResult;
+import com.eanco.fitivation.ddl.model.ReadWriteModel;
+import com.eanco.fitivation.ddl.model.ReadModel;
+import com.eanco.fitivation.ddl.model.exercise.ExerciseDetail;
+import com.eanco.fitivation.ddl.model.exercise.ExerciseResult;
+import com.eanco.fitivation.ddl.FitivationDatabase;
 
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.ObjectUtils;
@@ -32,10 +32,6 @@ public class DaoMapReduce {
             }
             else if (dbClass.equals(ExerciseResult.class)) {
                 MAP_DAO.putIfAbsent(dbClass, db.exerciseResultDao());
-                return MAP_DAO.get(dbClass);
-            }
-            else if (dbClass.equals(Exercise.class)) {
-                MAP_DAO.putIfAbsent(dbClass, db.exerciseDao());
                 return MAP_DAO.get(dbClass);
             }
         }

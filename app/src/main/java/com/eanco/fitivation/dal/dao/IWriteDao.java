@@ -1,6 +1,6 @@
 package com.eanco.fitivation.dal.dao;
 
-import com.eanco.fitivation.dal.model.ReadWriteModel;
+import com.eanco.fitivation.ddl.model.ReadWriteModel;
 
 import java.util.List;
 

@@ -15,13 +15,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.eanco.fitivation.dal.FitivationRepository;
-import com.eanco.fitivation.dal.model.exercise.ExerciseDetail;
+import com.eanco.fitivation.ddl.model.exercise.ExerciseDetail;
 import com.eanco.fitivation.databinding.FragmentPlaylistBinding;
-import com.eanco.fitivation.ui.exercise.ExerciseViewModel;
-import com.eanco.fitivation.ui.exercise.list.ExerciseRecyclerViewAdapter;
 import com.eanco.fitivation.ui.playlist.list.PlaylistRecyclerViewAdapter;
 
+import org.apache.commons.collections4.CollectionUtils;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class PlaylistFragment extends Fragment {
@@ -44,7 +45,10 @@ public class PlaylistFragment extends Fragment {
     private void setupExerciseRecyclerView(PlaylistViewModel viewModel) {
         RecyclerView recyclerView = binding.playlistRc;
         viewModel.getExerciseDetails().observe(getViewLifecycleOwner(),
-                e ->  recyclerView.setAdapter(new PlaylistRecyclerViewAdapter(e)));
+                e -> {
+                    binding.playlistStaticCreate.setEnabled(CollectionUtils.isEmpty(e));
+                    recyclerView.setAdapter(new PlaylistRecyclerViewAdapter(e));
+                });
     }
 
     @Override
@@ -65,15 +69,17 @@ public class PlaylistFragment extends Fragment {
     private static final List<ExerciseDetail> STATIC_EXERCISES_DETAILS;
     static {
         List<ExerciseDetail> tmpDetails = new ArrayList<>();
-        tmpDetails.add(new ExerciseDetail("Warmup Run", "Seconds", 220, 10));
-        tmpDetails.add(new ExerciseDetail("Wide Pushup", "Reps", 32, 2));
-        tmpDetails.add(new ExerciseDetail("Lower Back Thrust", "Reps", 32, 2));
-        tmpDetails.add(new ExerciseDetail("Bicycle Crunches", "Reps", 64, 4));
-        tmpDetails.add(new ExerciseDetail("Tricep Dip", "Reps", 14, 1));
-        tmpDetails.add(new ExerciseDetail("L-Sit", "Seconds", 18, 5));
-        tmpDetails.add(new ExerciseDetail("Reverse Grip Pull Up", "Reps", 16, 1));
-        tmpDetails.add(new ExerciseDetail("Knee Raise", "Reps", 14, 1));
-        tmpDetails.add(new ExerciseDetail("Grip Pull Up", "Reps", 16, 1));
+        tmpDetails.addAll(Arrays.asList(
+            new ExerciseDetail("Warmup Run", "Seconds", 240, true, 10),
+            new ExerciseDetail("Wide Pushup", "Reps", 34,true, 2),
+            new ExerciseDetail("Lower Back Thrust", "Reps", 34, true, 2),
+            new ExerciseDetail("Bicycle Crunches", "Reps", 64, true, 4),
+            new ExerciseDetail("Tricep Dip", "Reps", 14, true, 1),
+            new ExerciseDetail("L-Sit", "Seconds", 18, true, 5),
+            new ExerciseDetail("Reverse Grip Pull Up", "Reps", 16, true, 1),
+            new ExerciseDetail("Knee Raise", "Reps", 14, true, 1),
+            new ExerciseDetail("Grip Pull Up", "Reps", 16, true, 1)
+        ));
         STATIC_EXERCISES_DETAILS = tmpDetails;
     }
 

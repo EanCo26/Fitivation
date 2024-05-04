@@ -8,7 +8,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.eanco.fitivation.dal.FitivationRepository;
-import com.eanco.fitivation.dal.model.exercise.ExerciseDetail;
+import com.eanco.fitivation.ddl.model.exercise.ExerciseDetail;
 
 import org.apache.commons.lang3.ObjectUtils;
 
