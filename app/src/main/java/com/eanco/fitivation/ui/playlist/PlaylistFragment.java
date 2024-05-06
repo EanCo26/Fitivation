@@ -2,6 +2,7 @@ package com.eanco.fitivation.ui.playlist;
 
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,32 +15,40 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.eanco.fitivation.R;
 import com.eanco.fitivation.dal.FitivationRepository;
 import com.eanco.fitivation.ddl.model.exercise.ExerciseDetail;
 import com.eanco.fitivation.databinding.FragmentPlaylistBinding;
+import com.eanco.fitivation.preferences.FitivationPreferences;
 import com.eanco.fitivation.ui.playlist.list.PlaylistRecyclerViewAdapter;
 
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class PlaylistFragment extends Fragment {
 
     private FragmentPlaylistBinding binding;
+    private SharedPreferences preferences;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        PlaylistViewModel playlistViewModel = new ViewModelProvider(this).get(PlaylistViewModel.class);
         binding = FragmentPlaylistBinding.inflate(inflater, container, false);
-
-        setupExerciseRecyclerView(playlistViewModel);
-        setupExerciseCreateStatic(playlistViewModel);
-
+        preferences = FitivationPreferences.getExercisePreferences(getContext());
+        setupViewModel();
         return binding.getRoot();
+    }
+
+    private void setupViewModel() {
+        PlaylistViewModel viewModel = new ViewModelProvider(this).get(PlaylistViewModel.class);
+        setupExerciseRecyclerView(viewModel);
+        setupExerciseAddButton(viewModel);
+        setupExerciseCreateStaticButton(viewModel);
     }
 
     private void setupExerciseRecyclerView(PlaylistViewModel viewModel) {
@@ -57,13 +66,25 @@ public class PlaylistFragment extends Fragment {
         binding = null;
     }
 
-    private void setupExerciseCreateStatic(PlaylistViewModel viewModel) {
+    private void setupExerciseAddButton(PlaylistViewModel viewModel) {
+        Button button = binding.playlistAdd;
+        button.setOnClickListener(l -> viewModel.getExerciseDetails().getValue().stream()
+                .filter(ExerciseDetail::getSelected)
+                .forEach(this::addExercise));
+    }
+
+    private void setupExerciseCreateStaticButton(PlaylistViewModel viewModel) {
         Button button = binding.playlistStaticCreate;
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                FitivationRepository.insertAll(ExerciseDetail.class, STATIC_EXERCISES_DETAILS);
-            }
-        });
+        button.setOnClickListener(l -> FitivationRepository.insertAll(ExerciseDetail.class, STATIC_EXERCISES_DETAILS));
+    }
+
+    private void addExercise(ExerciseDetail exerciseDetail) {
+        exerciseDetail.setSelected(false);
+        FitivationPreferences.insert(preferences,
+                getString(R.string.prefs_exercise_added_ids),
+                Collections.singleton(exerciseDetail.getUid()),
+                true);
+        FitivationRepository.updateAll(ExerciseDetail.class, Collections.singletonList(exerciseDetail));
     }
 
     private static final List<ExerciseDetail> STATIC_EXERCISES_DETAILS;

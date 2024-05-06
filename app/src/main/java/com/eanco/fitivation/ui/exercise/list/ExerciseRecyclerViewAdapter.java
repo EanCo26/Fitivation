@@ -1,8 +1,11 @@
 package com.eanco.fitivation.ui.exercise.list;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
@@ -11,9 +14,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.eanco.fitivation.R;
 import com.eanco.fitivation.ddl.model.exercise.ExerciseDetail;
+import com.eanco.fitivation.preferences.FitivationPreferences;
 
 import org.apache.commons.collections4.ListUtils;
 
+import java.util.Collections;
 import java.util.List;
 
 public class ExerciseRecyclerViewAdapter extends RecyclerView.Adapter<ExerciseRecyclerViewAdapter.ViewHolder> {
@@ -28,6 +33,8 @@ public class ExerciseRecyclerViewAdapter extends RecyclerView.Adapter<ExerciseRe
     public ExerciseRecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_exercise_item, parent, false);
+
+
         return new ViewHolder(view);
     }
 
@@ -41,7 +48,7 @@ public class ExerciseRecyclerViewAdapter extends RecyclerView.Adapter<ExerciseRe
         });
 
         holder.getNameTextView().setText(exercise.getName());
-        holder.getGoalUnitTextView().setText(exercise.getTargetAmount() + " " + exercise.getUnit());
+        holder.getGoalUnitTextView().setText(String.format("%s %s", exercise.getTargetAmount(), exercise.getUnit()));
         holder.getSelectRadioButton().setChecked(Boolean.TRUE.equals(exercise.getSelected()));
     }
 
@@ -68,12 +75,15 @@ public class ExerciseRecyclerViewAdapter extends RecyclerView.Adapter<ExerciseRe
         public View getItem() {
             return item;
         }
+
         public TextView getNameTextView() {
             return nameTextView;
         }
+
         public TextView getGoalUnitTextView() {
             return goalUnitTextView;
         }
+
         public RadioButton getSelectRadioButton() {
             return selectRadioButton;
         }

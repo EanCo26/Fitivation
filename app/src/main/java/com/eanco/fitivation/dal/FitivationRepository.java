@@ -16,6 +16,10 @@ public class FitivationRepository {
         return DaoMapReduce.getReadDao(dbClass).getAll();
     }
 
+    public static <T> LiveData<List<T>> getByIds(Class<? extends ReadModel> dbClass, List<Integer> ids) {
+        return DaoMapReduce.getReadDao(dbClass).getByIds(ids);
+    }
+
     public static <T> void insertAll(Class<? extends ReadWriteModel> dbClass, List<T> entities) {
         executeThread(() -> DaoMapReduce.getReadWriteDao(dbClass).insertAll(entities));
     }

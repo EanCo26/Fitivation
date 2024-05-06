@@ -11,14 +11,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layoutManager="LinearLayoutManager"
-        app:layout_constraintBottom_toTopOf="@id/exercise_actions"
+        app:layout_constraintBottom_toTopOf="@id/exercise_action"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
         tools:layout_editor_absoluteX="0dp"
         tools:listitem="@layout/fragment_exercise_item" />
 
     <LinearLayout
-        android:id="@+id/exercise_actions"
+        android:id="@+id/exercise_action"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -27,11 +27,19 @@
         android:gravity="center">
 
         <Button
-            android:id="@+id/exercise_finish"
+            android:id="@+id/exercise_action_finish"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/standard_padding"
             android:text="@string/finish_exercises"
+            app:rippleColor="@color/ripple" />
+
+        <Button
+            android:id="@+id/exercise_action_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/standard_padding"
+            android:text="@string/delete_exercises"
             app:rippleColor="@color/ripple" />
 
     </LinearLayout>
