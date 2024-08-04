@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/text_margin"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <EditText
+        android:id="@+id/alert_exercise_edit_name"
+        style="@style/alert_edit_text"
+        app:layout_constraintTop_toTopOf="parent"
+        android:hint="Exercise Name..." />
+
+    <LinearLayout
+        android:id="@+id/alert_exercise_edit_target"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/alert_exercise_edit_name">
+
+        <EditText
+            android:id="@+id/alert_exercise_edit_target_amount"
+            style="@style/alert_edit_number_picker"
+            android:hint="0..." />
+
+        <EditText
+            android:id="@+id/alert_exercise_edit_target_unit"
+            style="@style/alert_edit_spinner"
+            android:hint="Reps..."/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/alert_exercise_edit_progress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/alert_exercise_edit_target">
+
+        <TextView
+            style="@style/alert_edit_number_picker"
+            android:gravity="center"
+            android:text="Increase By: " />
+
+        <EditText
+            android:id="@+id/alert_exercise_edit_progress_amount"
+            style="@style/alert_edit_text"
+            app:layout_constraintTop_toBottomOf="@id/alert_exercise_edit_target"
+            android:hint="0..." />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/alert_update_button"
+        style="@style/alert_edit_text"
+        android:text="@string/alert_update_finish"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/alert_exercise_edit_progress"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

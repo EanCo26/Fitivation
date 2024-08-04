@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_exercise">
+    app:startDestination="@+id/navigation_exercises">
 
     <fragment
-        android:id="@+id/navigation_exercise"
+        android:id="@+id/navigation_exercises"
         android:name="com.eanco.fitivation.ui.exercise.ExerciseFragment"
         android:label="@string/title_exercises"
         tools:layout="@layout/fragment_exercise" />
@@ -16,4 +16,10 @@
         android:name="com.eanco.fitivation.ui.playlist.PlaylistFragment"
         android:label="@string/title_playlist"
         tools:layout="@layout/fragment_playlist" />
+
+    <fragment
+        android:id="@+id/navigation_current_exercise"
+        android:name="com.eanco.fitivation.ui.exercise.current.CurrentExerciseFragment"
+        android:label="@string/title_exercise"
+        tools:layout="@layout/fragment_current_exercise" />
 </navigation>

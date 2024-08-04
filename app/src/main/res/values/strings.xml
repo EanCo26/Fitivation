@@ -3,10 +3,31 @@
     <string name="prefs_exercise_file">prefs_exercise_file</string>
     <string name="prefs_exercise_added_ids">prefs_exercise_added_ids</string>
 
-    <string name="title_exercises">Today</string>
-    <string name="finish_exercises">Finish</string>
+    <!--    ExerciseFragment   -->
+    <string name="title_exercises">Exercises</string>
+    <string name="start_exercises">Start</string>
     <string name="delete_exercises">Delete</string>
-
+    <!--    CurrentExerciseFragment   -->
+    <string name="title_exercise">Exercise</string>
+    <string name="finish_exercise">Complete</string>
+    <!--    PlaylistFragment   -->
     <string name="title_playlist">Playlist</string>
-    <string name="add_playlist">Add</string>
+    <string name="create_playlist">Create</string>
+    <string name="add_playlist">Add Today</string>
+
+    <!--    Common Alert Values   -->
+    <string name="alert_update_finish">Update</string>
+
+    <!--    Common Values   -->
+    <string name="format_single">%s</string>
+    <string name="format_double">%s %s</string>
+
+    <!--    ExerciseAlertValues   -->
+    <string name="alert_exercise_title">Exercise</string>
+    <string name="alert_exercise_name_hint">Name...</string>
+    <string name="alert_exercise_units_hint">Units...</string>
+    <string name="alert_exercise_target_hint">Target...</string>
+    <string name="alert_exercise_progress_hint">Progress...</string>
+    <string name="alert_delete_title">Delete Permanently?</string>
+    <string name="alert_delete_button">Delete</string>
 </resources>

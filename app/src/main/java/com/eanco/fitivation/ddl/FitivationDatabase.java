@@ -6,8 +6,10 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
+import com.eanco.fitivation.dal.dao.exercise.ExerciseActivityDao;
 import com.eanco.fitivation.dal.dao.exercise.ExerciseDetailDao;
 import com.eanco.fitivation.dal.dao.exercise.ExerciseResultDao;
+import com.eanco.fitivation.ddl.model.exercise.ExerciseActivity;
 import com.eanco.fitivation.ddl.model.exercise.ExerciseDetail;
 import com.eanco.fitivation.ddl.model.exercise.ExerciseResult;
 
@@ -15,9 +17,9 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 @Database(
-        entities = {ExerciseDetail.class, ExerciseResult.class},
+        entities = {ExerciseDetail.class, ExerciseResult.class, ExerciseActivity.class},
         views = {},
-        version = 1,
+        version = 4,
         exportSchema = false)
 public abstract class FitivationDatabase extends RoomDatabase {
 
@@ -27,6 +29,7 @@ public abstract class FitivationDatabase extends RoomDatabase {
 
     public abstract ExerciseDetailDao exerciseDetailDao();
     public abstract ExerciseResultDao exerciseResultDao();
+    public abstract ExerciseActivityDao exerciseActivityDao();
 
     public static FitivationDatabase init(Context context) {
         if(sInstance == null){

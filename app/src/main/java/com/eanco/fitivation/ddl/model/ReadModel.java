@@ -1,9 +1,6 @@
 package com.eanco.fitivation.ddl.model;
 
-import androidx.annotation.NonNull;
 import androidx.room.Ignore;
-
-import com.eanco.fitivation.converter.DateTimeConverter;
 
 public abstract class ReadModel {
     @Ignore

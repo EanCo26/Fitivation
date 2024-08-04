@@ -1,6 +1,5 @@
 package com.eanco.fitivation.ui.exercise;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,30 +9,30 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.eanco.fitivation.R;
-import com.eanco.fitivation.dal.FitivationRepository;
 import com.eanco.fitivation.ddl.model.exercise.ExerciseDetail;
-import com.eanco.fitivation.ddl.model.exercise.ExerciseResult;
 import com.eanco.fitivation.databinding.FragmentExerciseBinding;
-import com.eanco.fitivation.preferences.FitivationPreferences;
 import com.eanco.fitivation.ui.exercise.list.ExerciseRecyclerViewAdapter;
 
-import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class ExerciseFragment extends Fragment {
 
-    private ExerciseViewModel exerciseViewModel;
+    private ExerciseViewModel viewModel;
     private FragmentExerciseBinding binding;
-    private SharedPreferences preferences;
+    private NavController navController;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        preferences = FitivationPreferences.getExercisePreferences(getContext());
         binding = FragmentExerciseBinding.inflate(inflater, container, false);
         setupExerciseViewModel();
+        navController = Navigation.findNavController(container);
         return binding.getRoot();
     }
 
@@ -44,10 +43,9 @@ public class ExerciseFragment extends Fragment {
     }
 
     private void setupExerciseViewModel() {
-        exerciseViewModel = new ViewModelProvider(this).get(ExerciseViewModel.class);
-        setupExerciseRecyclerView(exerciseViewModel);
-        setupExerciseDelete(exerciseViewModel);
-        setupExerciseFinish(exerciseViewModel);
+        viewModel = new ViewModelProvider(this).get(ExerciseViewModel.class);
+        setupExerciseRecyclerView(viewModel);
+        setupExerciseStart(viewModel);
     }
 
     private void setupExerciseRecyclerView(ExerciseViewModel viewModel) {
@@ -56,32 +54,20 @@ public class ExerciseFragment extends Fragment {
                 e -> recyclerView.setAdapter(new ExerciseRecyclerViewAdapter(e)));
     }
 
-    private void setupExerciseDelete(ExerciseViewModel viewModel) {
-        Button button = binding.exerciseActionDelete;
-        button.setOnClickListener(l -> viewModel.getExercises().getValue().stream()
+    private void setupExerciseStart(ExerciseViewModel viewModel) {
+        Button button = binding.exerciseActionStart;
+        button.setOnClickListener(l -> startExercise(viewModel.getExercises().getValue().stream()
                 .filter(ExerciseDetail::getSelected)
-                .forEach(this::deleteExercise));
+                .collect(Collectors.toList()))
+        );
     }
 
-    private void setupExerciseFinish(ExerciseViewModel viewModel) {
-        Button button = binding.exerciseActionFinish;
-        button.setOnClickListener(l -> viewModel.getExercises().getValue().stream()
-                .filter(ExerciseDetail::getSelected)
-                .forEach(this::completeExercise));
-    }
-
-    private void deleteExercise(ExerciseDetail exerciseDetail) {
-        FitivationPreferences.delete(preferences,
-                getString(R.string.prefs_exercise_added_ids),
-                Collections.singleton(exerciseDetail.getUid()));
-    }
-
-    private void completeExercise(ExerciseDetail exerciseDetail) {
-        FitivationRepository.insertAll(ExerciseResult.class, Collections.singletonList(new ExerciseResult(exerciseDetail)));
-        exerciseDetail.setSelected(false);
-        exerciseDetail.setTargetAmount(exerciseDetail.getProgressEnabled() ?
-                exerciseDetail.getTargetAmount() + exerciseDetail.getProgressRate() :
-                exerciseDetail.getTargetAmount());
-        FitivationRepository.updateAll(ExerciseDetail.class, Collections.singletonList(exerciseDetail));
+    private void startExercise(List<ExerciseDetail> exerciseDetails) {
+        viewModel.getExercises();
+        navController.navigate(R.id.navigation_current_exercise);
+//        FitivationRepository.insertAll(ExerciseResult.class, Collections.singletonList(new ExerciseResult(exerciseDetail)));
+//        exerciseDetail.setSelected(false);
+//        exerciseDetail.setTargetAmount(exerciseDetail.getTargetAmount() + exerciseDetail.getProgressRate());
+//        FitivationRepository.updateAll(ExerciseDetail.class, Collections.singletonList(exerciseDetail));
     }
 }

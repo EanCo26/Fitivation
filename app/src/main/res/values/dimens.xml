@@ -4,6 +4,21 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="text_margin">16dp</dimen>
 
-    <!-- Custom screen values. -->
-    <dimen name="standard_padding">8dp</dimen>
+    <!-- Common Screen -->
+    <dimen name="standard_spacing">8dp</dimen>
+    <dimen name="standard_corner_radius">8dp</dimen>
+    <dimen name="min_width">70dp</dimen>
+
+    <!-- CircularProgressIndicator -->
+    <dimen name="indicator_size">360dp</dimen>
+    <dimen name="indicator_edit_text_width">300dp</dimen>
+    <dimen name="indicator_thickness">10dp</dimen>
+
+    <!-- Common Fragment -->
+    <dimen name="fragment_actions_height">64dp</dimen>
+
+    <!-- Recycler View Item -->
+    <dimen name="list_item_padding">8dp</dimen>
+    <dimen name="list_item_button_width">24dp</dimen>
+    <dimen name="list_item_button_height">36dp</dimen>
 </resources>

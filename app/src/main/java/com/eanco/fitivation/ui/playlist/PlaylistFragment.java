@@ -20,9 +20,8 @@ import com.eanco.fitivation.dal.FitivationRepository;
 import com.eanco.fitivation.ddl.model.exercise.ExerciseDetail;
 import com.eanco.fitivation.databinding.FragmentPlaylistBinding;
 import com.eanco.fitivation.preferences.FitivationPreferences;
+import com.eanco.fitivation.ui.exercise.ExerciseAlert;
 import com.eanco.fitivation.ui.playlist.list.PlaylistRecyclerViewAdapter;
-
-import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,14 +31,14 @@ import java.util.List;
 public class PlaylistFragment extends Fragment {
 
     private FragmentPlaylistBinding binding;
-    private SharedPreferences preferences;
+    private ExerciseAlert exerciseAlert;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
         binding = FragmentPlaylistBinding.inflate(inflater, container, false);
-        preferences = FitivationPreferences.getExercisePreferences(getContext());
+        exerciseAlert = new ExerciseAlert(getContext());
         setupViewModel();
         return binding.getRoot();
     }
@@ -47,23 +46,25 @@ public class PlaylistFragment extends Fragment {
     private void setupViewModel() {
         PlaylistViewModel viewModel = new ViewModelProvider(this).get(PlaylistViewModel.class);
         setupExerciseRecyclerView(viewModel);
+        setupExerciseCreateButton(viewModel);
         setupExerciseAddButton(viewModel);
-        setupExerciseCreateStaticButton(viewModel);
     }
 
     private void setupExerciseRecyclerView(PlaylistViewModel viewModel) {
         RecyclerView recyclerView = binding.playlistRc;
         viewModel.getExerciseDetails().observe(getViewLifecycleOwner(),
-                e -> {
-                    binding.playlistStaticCreate.setEnabled(CollectionUtils.isEmpty(e));
-                    recyclerView.setAdapter(new PlaylistRecyclerViewAdapter(e));
-                });
+                e -> recyclerView.setAdapter(new PlaylistRecyclerViewAdapter(e)));
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    private void setupExerciseCreateButton(PlaylistViewModel viewModel) {
+        Button button = binding.playlistCreate;
+        button.setOnClickListener(l -> updateExercise(null));
     }
 
     private void setupExerciseAddButton(PlaylistViewModel viewModel) {
@@ -73,35 +74,13 @@ public class PlaylistFragment extends Fragment {
                 .forEach(this::addExercise));
     }
 
-    private void setupExerciseCreateStaticButton(PlaylistViewModel viewModel) {
-        Button button = binding.playlistStaticCreate;
-        button.setOnClickListener(l -> FitivationRepository.insertAll(ExerciseDetail.class, STATIC_EXERCISES_DETAILS));
-    }
-
     private void addExercise(ExerciseDetail exerciseDetail) {
         exerciseDetail.setSelected(false);
-        FitivationPreferences.insert(preferences,
-                getString(R.string.prefs_exercise_added_ids),
-                Collections.singleton(exerciseDetail.getUid()),
-                true);
         FitivationRepository.updateAll(ExerciseDetail.class, Collections.singletonList(exerciseDetail));
     }
 
-    private static final List<ExerciseDetail> STATIC_EXERCISES_DETAILS;
-    static {
-        List<ExerciseDetail> tmpDetails = new ArrayList<>();
-        tmpDetails.addAll(Arrays.asList(
-            new ExerciseDetail("Warmup Run", "Seconds", 240, true, 10),
-            new ExerciseDetail("Wide Pushup", "Reps", 34,true, 2),
-            new ExerciseDetail("Lower Back Thrust", "Reps", 34, true, 2),
-            new ExerciseDetail("Bicycle Crunches", "Reps", 64, true, 4),
-            new ExerciseDetail("Tricep Dip", "Reps", 14, true, 1),
-            new ExerciseDetail("L-Sit", "Seconds", 18, true, 5),
-            new ExerciseDetail("Reverse Grip Pull Up", "Reps", 16, true, 1),
-            new ExerciseDetail("Knee Raise", "Reps", 14, true, 1),
-            new ExerciseDetail("Grip Pull Up", "Reps", 16, true, 1)
-        ));
-        STATIC_EXERCISES_DETAILS = tmpDetails;
+    private void updateExercise(ExerciseDetail exerciseDetail) {
+        exerciseAlert.create(exerciseDetail, R.layout.alert_exercise_update);
     }
 
 }

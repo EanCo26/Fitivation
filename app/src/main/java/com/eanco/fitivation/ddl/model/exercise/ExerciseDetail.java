@@ -14,10 +14,9 @@ public class ExerciseDetail extends ReadWriteModel {
     private String unit;
     @NonNull
     private Integer targetAmount;
-    @Ignore
-    private Integer actualAmount;
-    private Boolean isProgressEnabled;
+    @NonNull
     private Integer progressRate;
+    private String description;
 
     public ExerciseDetail() {
         super();
@@ -26,14 +25,13 @@ public class ExerciseDetail extends ReadWriteModel {
     public ExerciseDetail(@NonNull String name,
                           @NonNull String unit,
                           @NonNull Integer targetAmount,
-                          Boolean isProgressEnabled,
+                          String description,
                           Integer progressRate) {
         super();
         this.name = name;
         this.unit = unit;
         this.targetAmount = targetAmount;
-        this.actualAmount = 0;
-        this.isProgressEnabled = isProgressEnabled;
+        this.description = description;
         this.progressRate = progressRate;
     }
 
@@ -64,26 +62,20 @@ public class ExerciseDetail extends ReadWriteModel {
         this.targetAmount = targetAmount;
     }
 
-    public Integer getActualAmount() {
-        return actualAmount;
-    }
-    public void setActualAmount(Integer actualAmount) {
-        this.actualAmount = actualAmount;
-    }
-
-    public Boolean getProgressEnabled() {
-        return isProgressEnabled;
-    }
-    public void setProgressEnabled(Boolean isProgressEnabled) {
-        update();
-        this.isProgressEnabled = isProgressEnabled;
-    }
-
+    @NonNull
     public Integer getProgressRate() {
         return progressRate;
     }
-    public void setProgressRate(Integer progressRate) {
+    public void setProgressRate(@NonNull Integer progressRate) {
         update();
         this.progressRate = progressRate;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+    public void setDescription(String description) {
+        update();
+        this.description = description;
     }
 }

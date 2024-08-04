@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="view_component">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">@dimen/standard_spacing</item>
+        <item name="android:backgroundTint">@color/fitivationPrimaryVariant</item>
+    </style>
+    <style name="title" parent="view_component">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textSize">32sp</item>
+    </style>
+    <style name="sub_title" parent="view_component">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textSize">24sp</item>
+    </style>
+    <style name="edit_text" parent="view_component">
+        <item name="android:textSize">28sp</item>
+        <item name="android:minWidth">@dimen/min_width</item>
+    </style>
+    <style name="button" parent="view_component">
+        <item name="rippleColor">@color/clickRipple</item>
+    </style>
+    <style name="progress" parent="view_component">
+        <item name="android:layout_width">match_parent</item>
+        <item name="indicatorSize">@dimen/indicator_size</item>
+        <item name="trackThickness">@dimen/indicator_thickness</item>
+        <item name="indicatorColor">@color/fitivationPrimaryVariant</item>
+        <item name="trackColor">@color/lightGray</item>
+    </style>
+
+    <style name="fragment">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+    <style name="fragment_recycler_view">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_marginBottom">@dimen/fragment_actions_height</item>
+        <item name="layoutManager">LinearLayoutManager</item>
+        <item name="layout_constraintVertical_bias">0.0</item>
+        <item name="android:scrollbars">vertical</item>
+    </style>
+    <style name="fragment_actions">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/fragment_actions_height</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="list_item_layout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">@dimen/standard_spacing</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:background">?android:attr/selectableItemBackground</item>
+    </style>
+    <style name="list_item_sub_layout">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+    <style name="list_item_select">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:clickable">true</item>
+    </style>
+    <style name="list_item_text">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:textAppearance">?attr/textAppearanceListItem</item>
+    </style>
+    <style name="list_item_text_title" parent="list_item_text">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="list_item_text_subtext" parent="list_item_text">
+        <item name="android:textSize">13sp</item>
+    </style>
+    <style name="list_item_action_button">
+        <item name="android:layout_width">@dimen/list_item_button_width</item>
+        <item name="android:layout_height">@dimen/list_item_button_height</item>
+        <item name="android:background">?selectableItemBackground</item>
+        <item name="android:clickable">true</item>
+    </style>
+
+    <style name="alert_item">
+        <item name="android:layout_marginTop">@dimen/standard_spacing</item>
+        <item name="android:layout_marginBottom">@dimen/standard_spacing</item>
+    </style>
+    <style name="alert_text" parent="alert_item">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+    <style name="alert_title" parent="alert_text">
+        <item name="android:textSize">18sp</item>
+    </style>
+    <style name="alert_edit_text" parent="alert_item">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+    <style name="alert_edit_number_picker" parent="alert_item">
+        <item name="android:layout_width">80dp</item>
+        <item name="android:layout_height">56dp</item>
+    </style>
+    <style name="alert_edit_spinner" parent="alert_item">
+        <item name="android:layout_width">240dp</item>
+        <item name="android:layout_height">56dp</item>
+    </style>
+    <style name="alert_button" parent="alert_item">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="double_arrow_button" parent="button">
+        <item name="android:src">@drawable/double_arrow_right_white_24dp</item>
+        <item name="android:backgroundTint">@color/fitivationMisc</item>
+    </style>
+    <style name="double_arrow_button_left" parent="double_arrow_button">
+        <item name="android:scaleX">-1</item>
+    </style>
+    <style name="double_arrow_button_right" parent="double_arrow_button">
+        <item name="android:scaleX">1</item>
+    </style>
+
+</resources>

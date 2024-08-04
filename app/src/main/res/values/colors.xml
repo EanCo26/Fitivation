@@ -10,8 +10,13 @@
     <color name="white">#FFFFFFFF</color>
 
     <!--  Custom Colours  -->
-    <color name="cornflowerBlue">#0882EC</color>
-    <color name="cornflowerBlueLighter">#0882EC</color>
+    <color name="blue">#0882EC</color>
+    <color name="cornflowerBlue">#6495ED</color>
+    <color name="lightRed">#ff7b7b</color>
+    <color name="lighterRed">#FF9696</color>
+    <color name="amber">#FFBF00</color>
+    <color name="yellowOrange">#FFAA33</color>
+    <color name="lightGray">#464646</color>
 
-    <color name="ripple">#90D1D1D1</color>
+    <color name="clickRipple">#90D1D1D1</color>
 </resources>

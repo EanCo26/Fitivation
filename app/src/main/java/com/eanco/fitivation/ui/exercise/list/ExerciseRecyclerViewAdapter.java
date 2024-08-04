@@ -1,11 +1,8 @@
 package com.eanco.fitivation.ui.exercise.list;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
@@ -14,13 +11,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.eanco.fitivation.R;
 import com.eanco.fitivation.ddl.model.exercise.ExerciseDetail;
-import com.eanco.fitivation.preferences.FitivationPreferences;
 
 import org.apache.commons.collections4.ListUtils;
 
-import java.util.Collections;
 import java.util.List;
 
+// TODO - Create FitivationRecyclerViewAdapter<T> (?)
 public class ExerciseRecyclerViewAdapter extends RecyclerView.Adapter<ExerciseRecyclerViewAdapter.ViewHolder> {
     private List<ExerciseDetail> exercises;
 
@@ -33,8 +29,6 @@ public class ExerciseRecyclerViewAdapter extends RecyclerView.Adapter<ExerciseRe
     public ExerciseRecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_exercise_item, parent, false);
-
-
         return new ViewHolder(view);
     }
 
