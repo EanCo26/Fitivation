@@ -46,7 +46,7 @@ public abstract class ReadWriteModel extends ReadModel {
         this.origUpdateTime = origUpdateTime;
     }
 
-    protected void update() {
+    protected void updateVersion() {
         updateTime = DateTimeConverter.milliToDatetimeStr(System.currentTimeMillis());
         version++;
     }

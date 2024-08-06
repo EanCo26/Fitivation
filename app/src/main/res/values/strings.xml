@@ -4,9 +4,9 @@
     <string name="prefs_exercise_added_ids">prefs_exercise_added_ids</string>
 
     <!--    ExerciseFragment   -->
-    <string name="title_exercises">Exercises</string>
+    <string name="title_exercises">Exercise</string>
     <string name="start_exercises">Start</string>
-    <string name="delete_exercises">Delete</string>
+    <string name="delete_exercises">Remove</string>
     <!--    CurrentExerciseFragment   -->
     <string name="title_exercise">Exercise</string>
     <string name="finish_exercise">Complete</string>

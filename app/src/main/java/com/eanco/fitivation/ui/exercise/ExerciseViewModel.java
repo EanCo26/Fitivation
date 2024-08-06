@@ -9,6 +9,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.eanco.fitivation.dal.FitivationRepository;
+import com.eanco.fitivation.ddl.model.exercise.ExerciseActivity;
 import com.eanco.fitivation.ddl.model.exercise.ExerciseDetail;
 
 import org.apache.commons.lang3.ObjectUtils;
@@ -18,16 +19,16 @@ import java.util.List;
 
 public class ExerciseViewModel extends AndroidViewModel {
 
-    private final LiveData<List<ExerciseDetail>> exercises;
+    private final LiveData<List<ExerciseActivity>> exercises;
 
     public ExerciseViewModel(@NonNull Application application) {
         super(application);
 
         Context context = application.getApplicationContext();
-        exercises = FitivationRepository.getAll(ExerciseDetail.class);
+        exercises = FitivationRepository.getAll(ExerciseActivity.class);
     }
 
-    public LiveData<List<ExerciseDetail>> getExercises() {
+    public LiveData<List<ExerciseActivity>> getExercises() {
         return ObjectUtils.isNotEmpty(exercises) ? exercises : new MutableLiveData<>();
     }
 }

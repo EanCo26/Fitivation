@@ -40,7 +40,7 @@
         <TextView
             style="@style/alert_edit_number_picker"
             android:gravity="center"
-            android:text="Increase By: " />
+            android:text="Progress: " />
 
         <EditText
             android:id="@+id/alert_exercise_edit_progress_amount"
@@ -57,5 +57,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/alert_exercise_edit_progress"/>
+
+    <TextView
+        android:id="@+id/alert_exercise_edit_failures"
+        android:visibility="gone"
+        style="@style/sub_title"
+        android:textSize="14dp"
+        android:textColor="@color/lightRed"
+        android:textAlignment="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/alert_update_button"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

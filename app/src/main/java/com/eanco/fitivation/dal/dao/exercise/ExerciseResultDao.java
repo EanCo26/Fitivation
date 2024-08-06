@@ -1,5 +1,8 @@
 package com.eanco.fitivation.dal.dao.exercise;
 
+import static com.eanco.fitivation.util.QueryConstants.ORDER_BY_IDS;
+import static com.eanco.fitivation.util.QueryConstants.SELECT_ALL_EXERCISE_RESULT;
+
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
@@ -16,8 +19,7 @@ import java.util.List;
 @Dao
 public interface ExerciseResultDao extends IWriteDao<ExerciseResult> {
 
-    @Query("SELECT * FROM ExerciseResult " +
-            "ORDER BY uid ASC")
+    @Query(SELECT_ALL_EXERCISE_RESULT + ORDER_BY_IDS)
     LiveData<List<ExerciseResult>> getAll();
     @Insert
     void insertAll(List<ExerciseResult> exerciseDetails);

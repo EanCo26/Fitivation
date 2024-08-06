@@ -15,24 +15,28 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.eanco.fitivation.R;
 import com.eanco.fitivation.dal.FitivationRepository;
 import com.eanco.fitivation.databinding.FragmentCurrentExerciseBinding;
+import com.eanco.fitivation.ddl.model.exercise.ExerciseActivity;
 import com.eanco.fitivation.ddl.model.exercise.ExerciseDetail;
-import com.eanco.fitivation.ddl.model.exercise.ExerciseResult;
+import com.eanco.fitivation.util.ConversionUtils;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Collections;
-import java.util.stream.Collectors;
 
 public class CurrentExerciseFragment extends Fragment {
 
     private FragmentCurrentExerciseBinding binding;
-    Integer excerciseCount = 1;
+    private Integer exerciseIndex = 0;
+    private Integer numExercises;
 
     public static CurrentExerciseFragment newInstance() {
         return new CurrentExerciseFragment();
@@ -54,18 +58,29 @@ public class CurrentExerciseFragment extends Fragment {
     }
 
     private void setupCurrentExerciseViewModel() {
+        setup();
+    }
+
+    private void setup() {
         CurrentExerciseViewModel viewModel = new ViewModelProvider(this).get(CurrentExerciseViewModel.class);
-        createInstance(viewModel);
+        viewModel.getExercises().observe(getViewLifecycleOwner(), exercises -> {
+            if(ObjectUtils.isEmpty(numExercises)) {
+                numExercises = exercises.size()-1;
+            }
+
+            ExerciseActivity exercise = exercises.get(exerciseIndex);
+            setupExercise(exercise);
+            setupExerciseAmount(exercise);
+            setupExerciseActions(exercise);
+        });
     }
 
-    private void createInstance(CurrentExerciseViewModel viewModel) {
-        ExerciseDetail exercise = viewModel.getCurrentExercise();
-        setupExerciseDescription(exercise);
-        setupExerciseAmount(exercise);
-        setupExerciseComplete(exercise);
+    private void teardown() {
+        CurrentExerciseViewModel viewModel = new ViewModelProvider(this).get(CurrentExerciseViewModel.class);
+        viewModel.getExercises().removeObservers(getViewLifecycleOwner());
     }
 
-    private void setupExerciseDescription(ExerciseDetail exercise) {
+    private void setupExercise(ExerciseActivity exercise) {
         TextView nameText = binding.currentExerciseName;
         TextView goalText = binding.currentExerciseGoal;
         TextView exerciseUnitText = binding.currentExerciseEditUnit;
@@ -97,33 +112,89 @@ public class CurrentExerciseFragment extends Fragment {
         }
     }
 
-    private void setupExerciseComplete(ExerciseDetail exercise) {
+    private void setupExerciseActions(ExerciseActivity exercise) {
 
-        Button button = binding.currentExerciseActionFinish;
-        EditText amountEditText = binding.currentExerciseEditText;
+        Button finish = binding.currentExerciseActionFinish;
+        ImageButton prev = binding.currentExerciseActionPrevious;
+        ImageButton next = binding.currentExerciseActionNext;
 
-        //TODO: PERCENTAGE CALCULATED
+        finish.setOnClickListener(l -> completeExercise(exercise));
+        prev.setOnClickListener(l -> previousExercise());
+        next.setOnClickListener(l -> nextExercise());
 
-        button.setOnClickListener(l -> completeExercise(exercise));
+        prev.setEnabled(exerciseIndex > 0);
+        next.setEnabled(exerciseIndex < numExercises);
     }
 
-    private void setupExerciseAmount(ExerciseDetail exercise) {
-        CircularProgressIndicator progress = binding.currentExerciseProgress;
-        EditText amountEditText = binding.currentExerciseEditText;
+    private void setupExerciseAmount(ExerciseActivity exercise) {
+        try {
+            CircularProgressIndicator progress = binding.currentExerciseProgress;
+            progress.setProgress(0);
+            EditText amountEditText = binding.currentExerciseEditText;
+            amountEditText.setText(exercise.getAchievedAmount());
 
-        amountEditText.addTextChangedListener(new TextWatcher() {
-            public void afterTextChanged(Editable s) {
-                //TODO: PERCENTAGE CALCULATED
-                progress.setProgress(58);
-            }
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            amountEditText.addTextChangedListener(new TextWatcher() {
+                public void afterTextChanged(Editable s) {
+                    exercise.setAchievedAmount(ConversionUtils.convertToInteger(s.toString()));
+                    Integer percentage = ConversionUtils.calculatePercentage(
+                            exercise.getAchievedAmount(), exercise.getTargetAmount());
+                    progress.setProgress(percentage);
+                }
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+                public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            });
+        }
+        catch (Exception ex) {
+            Log.e(CurrentExerciseFragment.class.getSimpleName(), "setupExerciseAmount: ", ex);
+        }
+    }
+
+    private void previousExercise() {
+        exerciseIndex--;
+        teardown();
+        setup();
+    }
+
+    private void nextExercise() {
+        exerciseIndex++;
+        teardown();
+        setup();
+    }
+
+    private void completeExercise(ExerciseActivity exercise) {
+        if(exerciseIndex >= numExercises) {
+            completeAllExercises();
+            return;
+        }
+
+        exerciseIndex++;
+        FitivationRepository.updateAll(ExerciseActivity.class, Collections.singletonList(exercise));
+        teardown();
+        setup();
+    }
+
+    private void completeAllExercises() {
+
+        CurrentExerciseViewModel viewModel = new ViewModelProvider(this).get(CurrentExerciseViewModel.class);
+
+        // TOOO - below is not working and terrible,  change it
+        viewModel.getDetails().observe(getViewLifecycleOwner(), details -> {
+            viewModel.getExercises().observe(getViewLifecycleOwner(), exercises -> {
+
+                CollectionUtils.emptyIfNull(exercises).stream()
+                                .forEach(e -> {
+                                    e.setIsActive(false);
+                                    ExerciseDetail detail = CollectionUtils.emptyIfNull(details).stream()
+                                            .filter(d -> ObjectUtils.equals(e.getExerciseDetailUid(), d.getUid()))
+                                            .findFirst().get();
+                                    detail.setTargetAmount(e.getAchievedAmount()+ detail.getProgressRate());
+                                });
+                FitivationRepository.updateAll(ExerciseActivity.class, exercises);
+
+            });
+            FitivationRepository.updateAll(ExerciseDetail.class, details);
         });
-    }
 
-    private void completeExercise(ExerciseDetail exerciseDetail) {
-//        FitivationRepository.insertAll(ExerciseResult.class, Collections.singletonList(new ExerciseResult(exerciseDetail)));
-//        exerciseDetail.setTargetAmount(exerciseDetail.getActualAmount() + exerciseDetail.getProgressRate());
-//        FitivationRepository.updateAll(ExerciseDetail.class, Collections.singletonList(exerciseDetail));
+        getActivity().getSupportFragmentManager().popBackStack();
     }
 }

@@ -17,14 +17,14 @@ public class ExerciseResult extends ReadWriteModel {
     public ExerciseResult(ExerciseDetail exerciseDetail) {
         super();
         this.exerciseDetailUid = exerciseDetail.getUid();
-        this.achievedAmount = exerciseDetail.getActualAmount();
+//        this.achievedAmount = exerciseDetail.getActualAmount();
     }
 
     public Integer getExerciseDetailUid() {
         return exerciseDetailUid;
     }
     public void setExerciseDetailUid(Integer exerciseDetailUid) {
-        update();
+        updateVersion();
         this.exerciseDetailUid = exerciseDetailUid;
     }
 
@@ -32,7 +32,7 @@ public class ExerciseResult extends ReadWriteModel {
         return achievedAmount;
     }
     public void setAchievedAmount(Integer achievedAmount) {
-        update();
+        updateVersion();
         this.achievedAmount = achievedAmount;
     }
 }

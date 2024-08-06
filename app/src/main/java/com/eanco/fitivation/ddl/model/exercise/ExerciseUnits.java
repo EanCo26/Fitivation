@@ -1,4 +1,4 @@
-package com.eanco.fitivation.util;
+package com.eanco.fitivation.ddl.model.exercise;
 
 
 import androidx.annotation.NonNull;

@@ -24,6 +24,7 @@
             style="@style/button"
             android:text="@string/create_playlist" />
 
+        <!--        TODO - Remove add today in favor of plus/add button on indivadual items (in place of radio button)? -->
         <Button
             android:id="@+id/playlist_add"
             style="@style/button"

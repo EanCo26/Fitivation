@@ -19,7 +19,7 @@ import java.util.concurrent.Executors;
 @Database(
         entities = {ExerciseDetail.class, ExerciseResult.class, ExerciseActivity.class},
         views = {},
-        version = 4,
+        version = 8,
         exportSchema = false)
 public abstract class FitivationDatabase extends RoomDatabase {
 

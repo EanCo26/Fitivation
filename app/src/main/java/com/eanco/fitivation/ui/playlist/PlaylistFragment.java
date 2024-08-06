@@ -2,7 +2,6 @@ package com.eanco.fitivation.ui.playlist;
 
 import androidx.lifecycle.ViewModelProvider;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -17,16 +16,14 @@ import android.widget.Button;
 
 import com.eanco.fitivation.R;
 import com.eanco.fitivation.dal.FitivationRepository;
+import com.eanco.fitivation.ddl.model.exercise.ExerciseActivity;
 import com.eanco.fitivation.ddl.model.exercise.ExerciseDetail;
 import com.eanco.fitivation.databinding.FragmentPlaylistBinding;
-import com.eanco.fitivation.preferences.FitivationPreferences;
 import com.eanco.fitivation.ui.exercise.ExerciseAlert;
 import com.eanco.fitivation.ui.playlist.list.PlaylistRecyclerViewAdapter;
+import com.eanco.fitivation.util.ConversionUtils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 
 public class PlaylistFragment extends Fragment {
 
@@ -76,7 +73,8 @@ public class PlaylistFragment extends Fragment {
 
     private void addExercise(ExerciseDetail exerciseDetail) {
         exerciseDetail.setSelected(false);
-        FitivationRepository.updateAll(ExerciseDetail.class, Collections.singletonList(exerciseDetail));
+        ExerciseActivity exerciseActivity = ExerciseActivity.createExerciseActivity(exerciseDetail);
+        FitivationRepository.insertAll(ExerciseActivity.class, Collections.singletonList(exerciseActivity));
     }
 
     private void updateExercise(ExerciseDetail exerciseDetail) {

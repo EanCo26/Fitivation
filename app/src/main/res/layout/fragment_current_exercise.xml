@@ -62,6 +62,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
+<!--        TODO - disabling button does not gray it out -->
         <ImageButton
             android:id="@+id/current_exercise_action_previous"
             android:enabled="false"
@@ -72,6 +73,7 @@
             style="@style/button"
             android:text="@string/finish_exercise" />
 
+        <!--        TODO - disabling button does not gray it out -->
         <ImageButton
             android:id="@+id/current_exercise_action_next"
             android:enabled="false"

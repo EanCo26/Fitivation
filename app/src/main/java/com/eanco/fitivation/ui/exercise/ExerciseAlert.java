@@ -4,23 +4,22 @@ import android.content.Context;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.eanco.fitivation.R;
 import com.eanco.fitivation.dal.FitivationRepository;
 import com.eanco.fitivation.ddl.model.exercise.ExerciseDetail;
 import com.eanco.fitivation.ui.alert.FitivationAlert;
-import com.eanco.fitivation.util.ExerciseUnits;
+import com.eanco.fitivation.util.ConversionUtils;
+import com.eanco.fitivation.util.ViewUtils;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.ObjectUtils;
-import org.apache.commons.lang3.StringUtils;
 
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ExerciseAlert extends FitivationAlert {
 
@@ -42,7 +41,6 @@ public class ExerciseAlert extends FitivationAlert {
                     EditText progressEditText = dialog.findViewById(R.id.alert_exercise_edit_progress_amount);
 
                     nameEditText.setText(exerciseDetail.getName());
-                    goalEditText.setText(exerciseDetail.getTargetAmount().toString());
                     goalEditText.setText(exerciseDetail.getTargetAmount().toString());
                     goalUnitEditText.setText(exerciseDetail.getUnit());
                     progressEditText.setText(exerciseDetail.getProgressRate().toString());
@@ -97,60 +95,90 @@ public class ExerciseAlert extends FitivationAlert {
             exerciseDetail = (ExerciseDetail) detail;
         }
 
+        Map<Integer, String> failureMap = new HashMap();
+        String failureExceptionStrFormat = "Not able to update [%s] view";
+        String failureUiStrFormat = "%s is invalid!";
+
+        String viewName = "Name";
         try {
 
-            EditText nameEditText = dialog.findViewById(R.id.alert_exercise_edit_name);
-            String nameStr = nameEditText.getText().toString();
-            if(!StringUtils.equals(exerciseDetail.getName(), nameStr)) {
+            String nameStr = ViewUtils.getTextViewString(dialog, R.id.alert_exercise_edit_name);
+            if(!ConversionUtils.isValidAmendment(nameStr)) {
+                throw new IllegalArgumentException(String.format(failureExceptionStrFormat, viewName));
+            }
+            if(ConversionUtils.isDiff(exerciseDetail.getName(), nameStr)) {
                 exerciseDetail.setName(nameStr);
             }
         }
         catch (Exception ex) {
+            failureMap.put(R.id.alert_exercise_edit_name, String.format(failureUiStrFormat, viewName));
             Log.e(ExerciseAlert.class.getName(), "update: ", ex);
         }
 
+        viewName = "Target";
         try {
 
-            EditText amountEditText = dialog.findViewById(R.id.alert_exercise_edit_target_amount);
-            Integer amountInt = Integer.parseInt(amountEditText.getText().toString());
-            if(!exerciseDetail.getTargetAmount().equals(amountInt)) {
-                exerciseDetail.setTargetAmount(amountInt);
+            String amountStr = ViewUtils.getTextViewString(dialog, R.id.alert_exercise_edit_target_amount);
+            if(!ConversionUtils.isValidAmendment(amountStr)) {
+                throw new IllegalArgumentException(String.format(failureExceptionStrFormat, viewName));
+            }
+            if(ConversionUtils.isDiff(exerciseDetail.getTargetAmount(), ConversionUtils.convertToInteger(amountStr))) {
+                exerciseDetail.setTargetAmount(ConversionUtils.convertToInteger(amountStr));
             }
         }
         catch (Exception ex) {
+            failureMap.put(R.id.alert_exercise_edit_target_amount, String.format(failureUiStrFormat, viewName));
             Log.e(ExerciseAlert.class.getName(), "update: ", ex);
         }
 
+        viewName = "Target Unit";
         try {
 
-            EditText unitEditText = dialog.findViewById(R.id.alert_exercise_edit_target_unit);
-            String unitStr = unitEditText.getText().toString();
-            if(!exerciseDetail.getUnit().equals(unitStr)) {
+            String unitStr = ViewUtils.getTextViewString(dialog, R.id.alert_exercise_edit_target_unit);
+            if(!ConversionUtils.isValidAmendment(unitStr)) {
+                throw new IllegalArgumentException(String.format(failureExceptionStrFormat, viewName));
+            }
+            if(ConversionUtils.isDiff(exerciseDetail.getUnit(), unitStr)) {
                 exerciseDetail.setUnit(unitStr);
             }
         }
         catch (Exception ex) {
+            failureMap.put(R.id.alert_exercise_edit_target_unit, String.format(failureUiStrFormat, viewName));
             Log.e(ExerciseAlert.class.getName(), "update: ", ex);
         }
 
+        viewName = "Progress Rate";
         try {
 
-            EditText progressEditText = dialog.findViewById(R.id.alert_exercise_edit_progress_amount);
-            Integer progressInt = Integer.parseInt(progressEditText.getText().toString());
-            if(!exerciseDetail.getProgressRate().equals(progressInt)) {
-                exerciseDetail.setProgressRate(progressInt);
+            String progressStr = ViewUtils.getTextViewString(dialog, R.id.alert_exercise_edit_progress_amount);
+            if(!ConversionUtils.isValidAmendment(progressStr)) {
+                throw new IllegalArgumentException(String.format(failureExceptionStrFormat, viewName));
+            }
+            if(ConversionUtils.isDiff(exerciseDetail.getProgressRate(), ConversionUtils.convertToInteger(progressStr))) {
+                exerciseDetail.setProgressRate(ConversionUtils.convertToInteger(progressStr));
             }
         }
         catch (Exception ex) {
+            failureMap.put(R.id.alert_exercise_edit_progress_amount, String.format(failureUiStrFormat, viewName));
             Log.e(ExerciseAlert.class.getName(), "update: ", ex);
         }
 
-        if(isCreate) {
-            FitivationRepository.insertAll(ExerciseDetail.class, Collections.singletonList(exerciseDetail));
+        TextView displayFailures = dialog.findViewById(R.id.alert_exercise_edit_failures);
+        if(MapUtils.isEmpty(failureMap)) {
+
+            displayFailures.setVisibility(View.GONE);
+            if (isCreate) {
+                FitivationRepository.insertAll(ExerciseDetail.class, Collections.singletonList(exerciseDetail));
+            } else {
+                FitivationRepository.updateAll(ExerciseDetail.class, Collections.singletonList(exerciseDetail));
+            }
+            dismissDialog();
         }
         else {
-            FitivationRepository.updateAll(ExerciseDetail.class, Collections.singletonList(exerciseDetail));
+
+            displayFailures.setVisibility(View.VISIBLE);
+            String failures =  String.join("\n", CollectionUtils.emptyIfNull(failureMap.values()));
+            displayFailures.setText(failures);
         }
-        dismissDialog();
     }
 }

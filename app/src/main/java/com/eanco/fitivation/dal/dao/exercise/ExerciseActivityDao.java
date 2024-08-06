@@ -1,6 +1,8 @@
 package com.eanco.fitivation.dal.dao.exercise;
 
-import static com.eanco.fitivation.util.QueryConstants.FILTER_EXERCISE_ACTIVITY_BY_IDS;
+import static com.eanco.fitivation.util.QueryConstants.FILTER_BY_ACTIVE;
+import static com.eanco.fitivation.util.QueryConstants.FILTER_BY_IDS;
+import static com.eanco.fitivation.util.QueryConstants.ORDER_BY_IDS;
 import static com.eanco.fitivation.util.QueryConstants.SELECT_ALL_EXERCISE_ACTIVITY;
 
 import androidx.lifecycle.LiveData;
@@ -19,7 +21,9 @@ import java.util.List;
 @Dao
 public interface ExerciseActivityDao extends IWriteDao<ExerciseActivity> {
 
-    @Query(SELECT_ALL_EXERCISE_ACTIVITY + FILTER_EXERCISE_ACTIVITY_BY_IDS)
+    @Query(SELECT_ALL_EXERCISE_ACTIVITY + FILTER_BY_ACTIVE + ORDER_BY_IDS)
+    LiveData<List<ExerciseActivity>> getAll();
+    @Query(SELECT_ALL_EXERCISE_ACTIVITY + FILTER_BY_IDS + ORDER_BY_IDS)
     LiveData<List<ExerciseActivity>> getByIds(List<Integer> ids);
     @Insert
     void insertAll(List<ExerciseActivity> exerciseDetails);

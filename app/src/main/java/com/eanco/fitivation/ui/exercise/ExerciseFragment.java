@@ -14,9 +14,13 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.eanco.fitivation.R;
+import com.eanco.fitivation.dal.FitivationRepository;
+import com.eanco.fitivation.ddl.model.exercise.ExerciseActivity;
 import com.eanco.fitivation.ddl.model.exercise.ExerciseDetail;
 import com.eanco.fitivation.databinding.FragmentExerciseBinding;
 import com.eanco.fitivation.ui.exercise.list.ExerciseRecyclerViewAdapter;
+
+import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -46,6 +50,7 @@ public class ExerciseFragment extends Fragment {
         viewModel = new ViewModelProvider(this).get(ExerciseViewModel.class);
         setupExerciseRecyclerView(viewModel);
         setupExerciseStart(viewModel);
+        setupExerciseDelete(viewModel);
     }
 
     private void setupExerciseRecyclerView(ExerciseViewModel viewModel) {
@@ -62,12 +67,24 @@ public class ExerciseFragment extends Fragment {
         );
     }
 
-    private void startExercise(List<ExerciseDetail> exerciseDetails) {
-        viewModel.getExercises();
+    private void startExercise(List<ExerciseActivity> activities) {
+        FitivationRepository.updateAll(ExerciseActivity.class, activities);
         navController.navigate(R.id.navigation_current_exercise);
 //        FitivationRepository.insertAll(ExerciseResult.class, Collections.singletonList(new ExerciseResult(exerciseDetail)));
 //        exerciseDetail.setSelected(false);
 //        exerciseDetail.setTargetAmount(exerciseDetail.getTargetAmount() + exerciseDetail.getProgressRate());
 //        FitivationRepository.updateAll(ExerciseDetail.class, Collections.singletonList(exerciseDetail));
+    }
+
+    private void setupExerciseDelete(ExerciseViewModel viewModel) {
+        Button button = binding.exerciseActionRemove;
+        button.setOnClickListener(l -> deleteExercise(viewModel.getExercises().getValue().stream()
+                .filter(ExerciseDetail::getSelected)
+                .collect(Collectors.toList()))
+        );
+    }
+
+    private void deleteExercise(List<ExerciseActivity> activities) {
+        FitivationRepository.deleteAll(ExerciseActivity.class, activities);
     }
 }

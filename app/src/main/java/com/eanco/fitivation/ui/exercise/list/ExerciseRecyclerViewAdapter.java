@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.eanco.fitivation.R;
+import com.eanco.fitivation.ddl.model.exercise.ExerciseActivity;
 import com.eanco.fitivation.ddl.model.exercise.ExerciseDetail;
 
 import org.apache.commons.collections4.ListUtils;
@@ -18,9 +19,9 @@ import java.util.List;
 
 // TODO - Create FitivationRecyclerViewAdapter<T> (?)
 public class ExerciseRecyclerViewAdapter extends RecyclerView.Adapter<ExerciseRecyclerViewAdapter.ViewHolder> {
-    private List<ExerciseDetail> exercises;
+    private List<ExerciseActivity> exercises;
 
-    public ExerciseRecyclerViewAdapter(List<ExerciseDetail> exercises) {
+    public ExerciseRecyclerViewAdapter(List<ExerciseActivity> exercises) {
         this.exercises = ListUtils.emptyIfNull(exercises);
     }
 

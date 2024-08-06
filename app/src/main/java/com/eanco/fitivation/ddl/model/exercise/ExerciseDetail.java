@@ -2,7 +2,6 @@ package com.eanco.fitivation.ddl.model.exercise;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
-import androidx.room.Ignore;
 
 import com.eanco.fitivation.ddl.model.ReadWriteModel;
 
@@ -40,7 +39,7 @@ public class ExerciseDetail extends ReadWriteModel {
         return name;
     }
     public void setName(@NonNull String name) {
-        update();
+        updateVersion();
         this.name = name;
     }
 
@@ -49,7 +48,7 @@ public class ExerciseDetail extends ReadWriteModel {
         return unit;
     }
     public void setUnit(@NonNull String unit) {
-        update();
+        updateVersion();
         this.unit = unit;
     }
 
@@ -58,7 +57,7 @@ public class ExerciseDetail extends ReadWriteModel {
         return targetAmount;
     }
     public void setTargetAmount(@NonNull Integer targetAmount) {
-        update();
+        updateVersion();
         this.targetAmount = targetAmount;
     }
 
@@ -67,7 +66,7 @@ public class ExerciseDetail extends ReadWriteModel {
         return progressRate;
     }
     public void setProgressRate(@NonNull Integer progressRate) {
-        update();
+        updateVersion();
         this.progressRate = progressRate;
     }
 
@@ -75,7 +74,7 @@ public class ExerciseDetail extends ReadWriteModel {
         return description;
     }
     public void setDescription(String description) {
-        update();
+        updateVersion();
         this.description = description;
     }
 }
