@@ -17,6 +17,8 @@
     <color name="amber">#FFBF00</color>
     <color name="yellowOrange">#FFAA33</color>
     <color name="lightGray">#464646</color>
+    <color name="disabledGray">#202020</color>
+    <color name="semi_transparent">#80464646</color>
 
     <color name="clickRipple">#90D1D1D1</color>
 </resources>

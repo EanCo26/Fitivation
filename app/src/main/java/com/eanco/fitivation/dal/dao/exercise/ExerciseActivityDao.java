@@ -24,7 +24,7 @@ public interface ExerciseActivityDao extends IWriteDao<ExerciseActivity> {
     @Query(SELECT_ALL_EXERCISE_ACTIVITY + FILTER_BY_ACTIVE + ORDER_BY_IDS)
     LiveData<List<ExerciseActivity>> getAll();
     @Query(SELECT_ALL_EXERCISE_ACTIVITY + FILTER_BY_IDS + ORDER_BY_IDS)
-    LiveData<List<ExerciseActivity>> getByIds(List<Integer> ids);
+    List<ExerciseActivity> getByIds(List<Integer> ids);
     @Insert
     void insertAll(List<ExerciseActivity> exerciseDetails);
     @Update(onConflict = OnConflictStrategy.ABORT)

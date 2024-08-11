@@ -3,19 +3,22 @@ package com.eanco.fitivation.ui.playlist.list;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.RadioButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.eanco.fitivation.R;
+import com.eanco.fitivation.dal.FitivationRepository;
+import com.eanco.fitivation.ddl.model.exercise.ExerciseActivity;
 import com.eanco.fitivation.ddl.model.exercise.ExerciseDetail;
 import com.eanco.fitivation.ui.exercise.ExerciseAlert;
 
 import org.apache.commons.collections4.ListUtils;
 
+import java.util.Collections;
 import java.util.List;
 
 public class PlaylistRecyclerViewAdapter extends RecyclerView.Adapter<PlaylistRecyclerViewAdapter.ViewHolder> {
@@ -37,19 +40,16 @@ public class PlaylistRecyclerViewAdapter extends RecyclerView.Adapter<PlaylistRe
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        ExerciseDetail exerciseDetail = exerciseDetails.get(position);
+        ExerciseDetail exercise = exerciseDetails.get(position);
 
-        holder.getItem().setOnClickListener(item -> {
-            exerciseDetail.setSelected(!exerciseDetail.getSelected());
-            holder.getSelectRadioButton().setChecked(exerciseDetail.getSelected());
-        });
+        holder.getEditImageView().setOnClickListener(item -> exerciseAlert.create(exercise, R.layout.alert_exercise_update));
+        holder.getDeleteImageView().setOnClickListener(item -> exerciseAlert.create(exercise, R.layout.alert_confirm_delete));
+        holder.getAddItemButton().setOnClickListener(item ->
+                FitivationRepository.insertAll(ExerciseActivity.class, Collections.singletonList(ExerciseActivity.createExerciseActivity(exercise))));
 
-        holder.getEditImageView().setOnClickListener(item -> exerciseAlert.create(exerciseDetail, R.layout.alert_exercise_update));
-        holder.getDeleteImageView().setOnClickListener(item -> exerciseAlert.create(exerciseDetail, R.layout.alert_confirm_delete));
+        holder.getNameTextView().setText(exercise.getName());
+        holder.getGoalUnitTextView().setText(String.format("%s %s", exercise.getTargetAmount(), exercise.getUnit()));
 
-        holder.getNameTextView().setText(exerciseDetail.getName());
-        holder.getDescriptionTextView().setText(exerciseDetail.getDescription());
-        holder.getSelectRadioButton().setChecked(Boolean.TRUE.equals(exerciseDetail.getSelected()));
     }
 
     @Override
@@ -61,19 +61,19 @@ public class PlaylistRecyclerViewAdapter extends RecyclerView.Adapter<PlaylistRe
 
         private final View item;
         private final TextView nameTextView;
-        private final TextView descriptionTextView;
+        private final TextView goalUnitTextView;
         private final ImageView editImageView;
         private final ImageView deleteImageView;
-        private final RadioButton selectRadioButton;
+        private final ImageButton addItemButton;
 
         public ViewHolder(@NonNull View item) {
             super(item);
             this.item = item;
             nameTextView = item.findViewById(R.id.playlist_item_name);
-            descriptionTextView = item.findViewById(R.id.playlist_item_description);
+            goalUnitTextView = item.findViewById(R.id.playlist_item_goal);
             editImageView = item.findViewById(R.id.playlist_item_edit);
             deleteImageView = item.findViewById(R.id.playlist_item_delete);
-            selectRadioButton = item.findViewById(R.id.playlist_item_select);
+            addItemButton = item.findViewById(R.id.playlist_item_add);
         }
 
         public View getItem() {
@@ -82,8 +82,8 @@ public class PlaylistRecyclerViewAdapter extends RecyclerView.Adapter<PlaylistRe
         public TextView getNameTextView() {
             return nameTextView;
         }
-        public TextView getDescriptionTextView() {
-            return descriptionTextView;
+        public TextView getGoalUnitTextView() {
+            return goalUnitTextView;
         }
         public ImageView getEditImageView() {
             return editImageView;
@@ -91,8 +91,8 @@ public class PlaylistRecyclerViewAdapter extends RecyclerView.Adapter<PlaylistRe
         public ImageView getDeleteImageView() {
             return deleteImageView;
         }
-        public RadioButton getSelectRadioButton() {
-            return selectRadioButton;
+        public ImageButton getAddItemButton() {
+            return addItemButton;
         }
     }
 }

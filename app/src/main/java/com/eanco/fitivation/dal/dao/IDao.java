@@ -9,7 +9,7 @@ import java.util.List;
 public interface IDao<T extends ReadModel>  {
     LiveData<List<T>> getAll();
 
-    default LiveData<List<T>> getByIds(List<Integer> ids) {
+    default List<T> getByIds(List<Integer> ids) {
         return null;
     }
 }

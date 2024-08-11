@@ -37,6 +37,7 @@ public abstract class FitivationDatabase extends RoomDatabase {
                 sInstance = Room.databaseBuilder(context.getApplicationContext(), FitivationDatabase.class, FitivationDatabase.DB_NAME)
                         .addMigrations()
                         .fallbackToDestructiveMigration()
+                        .allowMainThreadQueries()
                         .build();
             }
         }
@@ -47,26 +48,4 @@ public abstract class FitivationDatabase extends RoomDatabase {
         return sInstance;
     }
 
-    public static class DiskExecutor {
-
-        private static final Object LOCK = new Object();
-        private static DiskExecutor sInstance;
-        private final Executor diskIO;
-
-        private DiskExecutor(Executor diskIO) {
-            this.diskIO = diskIO;
-        }
-
-        public static DiskExecutor getsInstance(){
-            synchronized (LOCK){
-                sInstance = new DiskExecutor(Executors.newSingleThreadExecutor());
-            }
-            return sInstance;
-        }
-
-        public Executor getDiskIO() {
-            return diskIO;
-        }
-
-    }
 }

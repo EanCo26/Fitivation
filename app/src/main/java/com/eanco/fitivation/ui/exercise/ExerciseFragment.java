@@ -50,7 +50,6 @@ public class ExerciseFragment extends Fragment {
         viewModel = new ViewModelProvider(this).get(ExerciseViewModel.class);
         setupExerciseRecyclerView(viewModel);
         setupExerciseStart(viewModel);
-        setupExerciseDelete(viewModel);
     }
 
     private void setupExerciseRecyclerView(ExerciseViewModel viewModel) {
@@ -61,30 +60,20 @@ public class ExerciseFragment extends Fragment {
 
     private void setupExerciseStart(ExerciseViewModel viewModel) {
         Button button = binding.exerciseActionStart;
-        button.setOnClickListener(l -> startExercise(viewModel.getExercises().getValue().stream()
-                .filter(ExerciseDetail::getSelected)
-                .collect(Collectors.toList()))
-        );
+        button.setOnClickListener(l -> {
+            if(CollectionUtils.isNotEmpty(viewModel.getExercises().getValue())) {
+                startExercise();
+            }
+        });
     }
 
-    private void startExercise(List<ExerciseActivity> activities) {
-        FitivationRepository.updateAll(ExerciseActivity.class, activities);
+    private void startExercise() {
+//        FitivationRepository.updateAll(ExerciseActivity.class, activities);
+
         navController.navigate(R.id.navigation_current_exercise);
 //        FitivationRepository.insertAll(ExerciseResult.class, Collections.singletonList(new ExerciseResult(exerciseDetail)));
 //        exerciseDetail.setSelected(false);
 //        exerciseDetail.setTargetAmount(exerciseDetail.getTargetAmount() + exerciseDetail.getProgressRate());
 //        FitivationRepository.updateAll(ExerciseDetail.class, Collections.singletonList(exerciseDetail));
-    }
-
-    private void setupExerciseDelete(ExerciseViewModel viewModel) {
-        Button button = binding.exerciseActionRemove;
-        button.setOnClickListener(l -> deleteExercise(viewModel.getExercises().getValue().stream()
-                .filter(ExerciseDetail::getSelected)
-                .collect(Collectors.toList()))
-        );
-    }
-
-    private void deleteExercise(List<ExerciseActivity> activities) {
-        FitivationRepository.deleteAll(ExerciseActivity.class, activities);
     }
 }

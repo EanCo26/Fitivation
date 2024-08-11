@@ -19,12 +19,4 @@
     <color name="fitivationSecondary">@color/lightRed</color>
     <color name="fitivationSecondaryVariant">@color/lighterRed</color>
     <color name="fitivationMisc">@color/lightGray</color>
-
-    <style name="list_item_action_edit" parent="list_item_action_button">
-        <item name="android:src">@drawable/edit_white_24dp</item>
-    </style>
-
-    <style name="list_item_action_delete" parent="list_item_action_button">
-        <item name="android:src">@drawable/delete_white_24dp</item>
-    </style>
 </resources>

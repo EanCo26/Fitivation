@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData;
 
 import com.eanco.fitivation.ddl.model.ReadModel;
 import com.eanco.fitivation.ddl.model.ReadWriteModel;
-import com.eanco.fitivation.ddl.FitivationDatabase;
+import com.eanco.fitivation.util.ThreadUtils;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ public class FitivationRepository {
         return DaoMapReduce.getReadDao(dbClass).getAll();
     }
 
-    public static <T> LiveData<List<T>> getByIds(Class<? extends ReadModel> dbClass, List<Integer> ids) {
+    public static <T> List<T> getByIds(Class<? extends ReadModel> dbClass, List<Integer> ids) {
         return DaoMapReduce.getReadDao(dbClass).getByIds(ids);
     }
 
@@ -34,7 +34,7 @@ public class FitivationRepository {
 
     private static void executeThread(Runnable run) {
         try {
-            FitivationDatabase.DiskExecutor.getsInstance().getDiskIO().execute(run);
+            ThreadUtils.Executor.getsInstance().getExecutor().execute(run);
         }
         catch (Exception ex) {
             Log.e("FitivationWriteRepository", "executeThread: ", ex);

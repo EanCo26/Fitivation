@@ -44,7 +44,6 @@ public class PlaylistFragment extends Fragment {
         PlaylistViewModel viewModel = new ViewModelProvider(this).get(PlaylistViewModel.class);
         setupExerciseRecyclerView(viewModel);
         setupExerciseCreateButton(viewModel);
-        setupExerciseAddButton(viewModel);
     }
 
     private void setupExerciseRecyclerView(PlaylistViewModel viewModel) {
@@ -62,19 +61,6 @@ public class PlaylistFragment extends Fragment {
     private void setupExerciseCreateButton(PlaylistViewModel viewModel) {
         Button button = binding.playlistCreate;
         button.setOnClickListener(l -> updateExercise(null));
-    }
-
-    private void setupExerciseAddButton(PlaylistViewModel viewModel) {
-        Button button = binding.playlistAdd;
-        button.setOnClickListener(l -> viewModel.getExerciseDetails().getValue().stream()
-                .filter(ExerciseDetail::getSelected)
-                .forEach(this::addExercise));
-    }
-
-    private void addExercise(ExerciseDetail exerciseDetail) {
-        exerciseDetail.setSelected(false);
-        ExerciseActivity exerciseActivity = ExerciseActivity.createExerciseActivity(exerciseDetail);
-        FitivationRepository.insertAll(ExerciseActivity.class, Collections.singletonList(exerciseActivity));
     }
 
     private void updateExercise(ExerciseDetail exerciseDetail) {

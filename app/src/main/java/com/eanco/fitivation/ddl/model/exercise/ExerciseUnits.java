@@ -3,8 +3,8 @@ package com.eanco.fitivation.ddl.model.exercise;
 
 import androidx.annotation.NonNull;
 public enum ExerciseUnits {
-    REPS("Reps"),
-    SECONDS("Secs");
+    REPS("Rep"),
+    SECONDS("Sec");
 
     private String unit;
 
@@ -21,4 +21,6 @@ public enum ExerciseUnits {
     public String toString() {
         return unit;
     }
+
+
 }

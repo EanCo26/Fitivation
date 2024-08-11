@@ -79,10 +79,18 @@
         <item name="android:textSize">13sp</item>
     </style>
     <style name="list_item_action_button">
-        <item name="android:layout_width">@dimen/list_item_button_width</item>
+        <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">@dimen/list_item_button_height</item>
-        <item name="android:background">?selectableItemBackground</item>
-        <item name="android:clickable">true</item>
+        <item name="android:backgroundTint">@color/semi_transparent</item>
+    </style>
+    <style name="list_item_action_add" parent="list_item_action_button">
+        <item name="android:src">@drawable/add_circle_white_24dp</item>
+    </style>
+    <style name="list_item_action_edit" parent="list_item_action_button">
+        <item name="android:src">@drawable/edit_white_24dp</item>
+    </style>
+    <style name="list_item_action_delete" parent="list_item_action_button">
+        <item name="android:src">@drawable/delete_white_24dp</item>
     </style>
 
     <style name="alert_item">

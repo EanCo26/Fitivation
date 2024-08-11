@@ -30,13 +30,16 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.Collection;
 import java.util.Collections;
+import java.util.stream.Collectors;
 
 public class CurrentExerciseFragment extends Fragment {
 
     private FragmentCurrentExerciseBinding binding;
     private Integer exerciseIndex = 0;
     private Integer numExercises;
+    private Integer amount = 0;
 
     public static CurrentExerciseFragment newInstance() {
         return new CurrentExerciseFragment();
@@ -81,6 +84,7 @@ public class CurrentExerciseFragment extends Fragment {
     }
 
     private void setupExercise(ExerciseActivity exercise) {
+
         TextView nameText = binding.currentExerciseName;
         TextView goalText = binding.currentExerciseGoal;
         TextView exerciseUnitText = binding.currentExerciseEditUnit;
@@ -95,9 +99,7 @@ public class CurrentExerciseFragment extends Fragment {
 
         try {
             String goalStr = getResources().getString(R.string.format_double);
-            goalText.setText(String.format(goalStr,
-                    exercise.getTargetAmount().toString(),
-                    exercise.getUnit()));
+            goalText.setText(String.format(goalStr, exercise.getTargetAmount().toString(), exercise.getUnit()));
         }
         catch (Exception ex) {
             Log.e(getClass().getName(), "setupExerciseDescription: ", ex);
@@ -119,27 +121,32 @@ public class CurrentExerciseFragment extends Fragment {
         ImageButton next = binding.currentExerciseActionNext;
 
         finish.setOnClickListener(l -> completeExercise(exercise));
-        prev.setOnClickListener(l -> previousExercise());
-        next.setOnClickListener(l -> nextExercise());
+        prev.setOnClickListener(l -> changeExercise(exercise, false));
+        next.setOnClickListener(l -> changeExercise(exercise, true));
 
-        prev.setEnabled(exerciseIndex > 0);
-        next.setEnabled(exerciseIndex < numExercises);
+        Boolean isEnabled = exerciseIndex > 0;
+        prev.setEnabled(isEnabled);
+        prev.setVisibility(isEnabled ? View.VISIBLE : View.INVISIBLE);
+
+        isEnabled = exerciseIndex < numExercises;
+        next.setEnabled(isEnabled);
+        next.setVisibility(isEnabled ? View.VISIBLE : View.INVISIBLE);
     }
 
     private void setupExerciseAmount(ExerciseActivity exercise) {
         try {
-            CircularProgressIndicator progress = binding.currentExerciseProgress;
-            progress.setProgress(0);
-            EditText amountEditText = binding.currentExerciseEditText;
-            amountEditText.setText(exercise.getAchievedAmount());
+            EditText exerciseEditText = binding.currentExerciseEditText;
 
-            amountEditText.addTextChangedListener(new TextWatcher() {
+            amount = exercise.getAchievedAmount();
+            setRecordedAmount();
+            setProgress(exercise);
+
+            exerciseEditText.addTextChangedListener(new TextWatcher() {
                 public void afterTextChanged(Editable s) {
-                    exercise.setAchievedAmount(ConversionUtils.convertToInteger(s.toString()));
-                    Integer percentage = ConversionUtils.calculatePercentage(
-                            exercise.getAchievedAmount(), exercise.getTargetAmount());
-                    progress.setProgress(percentage);
+                    amount = getRecordedAmount();
+                    setProgress(exercise);
                 }
+
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
                 public void onTextChanged(CharSequence s, int start, int before, int count) {}
             });
@@ -149,52 +156,86 @@ public class CurrentExerciseFragment extends Fragment {
         }
     }
 
-    private void previousExercise() {
-        exerciseIndex--;
-        teardown();
-        setup();
-    }
-
-    private void nextExercise() {
-        exerciseIndex++;
+    private void changeExercise(ExerciseActivity exercise, Boolean isNext) {
+        exercise.setAchievedAmount(amount);
+        exerciseIndex += isNext ? 1 : -1;
         teardown();
         setup();
     }
 
     private void completeExercise(ExerciseActivity exercise) {
+
+        exercise.setAchievedAmount(getRecordedAmount());
+        FitivationRepository.updateAll(ExerciseActivity.class, Collections.singletonList(exercise));
         if(exerciseIndex >= numExercises) {
             completeAllExercises();
-            return;
         }
-
-        exerciseIndex++;
-        FitivationRepository.updateAll(ExerciseActivity.class, Collections.singletonList(exercise));
-        teardown();
-        setup();
+        else {
+            changeExercise(exercise, true);
+        }
     }
 
     private void completeAllExercises() {
 
         CurrentExerciseViewModel viewModel = new ViewModelProvider(this).get(CurrentExerciseViewModel.class);
 
-        // TOOO - below is not working and terrible,  change it
-        viewModel.getDetails().observe(getViewLifecycleOwner(), details -> {
-            viewModel.getExercises().observe(getViewLifecycleOwner(), exercises -> {
+        viewModel.getExercises().observe(getViewLifecycleOwner(), exercises -> {
 
-                CollectionUtils.emptyIfNull(exercises).stream()
-                                .forEach(e -> {
-                                    e.setIsActive(false);
-                                    ExerciseDetail detail = CollectionUtils.emptyIfNull(details).stream()
-                                            .filter(d -> ObjectUtils.equals(e.getExerciseDetailUid(), d.getUid()))
-                                            .findFirst().get();
-                                    detail.setTargetAmount(e.getAchievedAmount()+ detail.getProgressRate());
-                                });
-                FitivationRepository.updateAll(ExerciseActivity.class, exercises);
+            CollectionUtils.emptyIfNull(exercises).stream()
+                            .forEach(ExerciseActivity::finish);
+            FitivationRepository.updateAll(ExerciseActivity.class, exercises);
 
-            });
-            FitivationRepository.updateAll(ExerciseDetail.class, details);
+            CollectionUtils.emptyIfNull(exercises).stream()
+                .forEach(e -> {
+                    ExerciseDetail detail = viewModel.getDetailById(e.getExerciseDetailUid());
+                    detail.setTargetAmount(e.getAchievedAmount()+e.getProgressRate());
+                    FitivationRepository.updateAll(ExerciseDetail.class, Collections.singletonList(detail));
+                });
         });
 
         getActivity().getSupportFragmentManager().popBackStack();
+    }
+
+    private Integer getRecordedAmount() {
+
+        try {
+            EditText exerciseEditText = binding.currentExerciseEditText;
+            String amountStr = exerciseEditText.getText().toString();
+            return ConversionUtils.convertToInteger(amountStr);
+        }
+        catch (Exception ex) {
+            Log.e(getClass().getName(), "getRecordedAmount: ", ex);
+        }
+        return 0;
+    }
+
+    private void setRecordedAmount() {
+
+        EditText exerciseEditText = binding.currentExerciseEditText;
+        try {
+            exerciseEditText.setText(amount.toString());
+            return;
+        }
+        catch (Exception ex) {
+            exerciseEditText.setText(StringUtils.EMPTY);
+            Log.e(getClass().getName(), "setRecordedAmount: ", ex);
+        }
+        exerciseEditText.setText(StringUtils.EMPTY);
+    }
+
+    private void setProgress(ExerciseActivity exercise) {
+
+        CircularProgressIndicator progress = binding.currentExerciseProgress;
+        try {
+            Integer percentage =
+                    ConversionUtils.calculatePercentage(amount, exercise.getTargetAmount());
+            progress.setProgress(percentage);
+            return;
+        }
+        catch (Exception ex) {
+            progress.setProgress(0);
+            Log.e(getClass().getName(), "setProgress: ", ex);
+        }
+        progress.setProgress(0);
     }
 }

@@ -23,7 +23,7 @@ public interface ExerciseDetailDao extends IWriteDao<ExerciseDetail> {
     @Query(SELECT_ALL_EXERCISE_DETAIL + ORDER_BY_IDS)
     LiveData<List<ExerciseDetail>> getAll();
     @Query(SELECT_ALL_EXERCISE_DETAIL + FILTER_BY_IDS + ORDER_BY_IDS)
-    LiveData<List<ExerciseDetail>> getByIds(List<Integer> ids);
+    List<ExerciseDetail> getByIds(List<Integer> ids);
     @Insert
     void insertAll(List<ExerciseDetail> exerciseDetails);
     @Update(onConflict = OnConflictStrategy.ABORT)

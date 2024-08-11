@@ -48,7 +48,7 @@ public class ExerciseActivity extends ExerciseDetail {
         this.achievedTime = achievedTime;
     }
 
-    public void finish(Integer achievedAmount) {
+    public void finish() {
         updateVersion();
         this.isActive = false;
         this.achievedTime = DateTimeConverter.milliToDatetimeStr(System.currentTimeMillis());

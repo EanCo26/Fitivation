@@ -51,7 +51,7 @@
             style="@style/view_component"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="exercise_unit"/>
+            tools:text="exercise_unit"/>
 
     </LinearLayout>
 
@@ -76,8 +76,8 @@
         <!--        TODO - disabling button does not gray it out -->
         <ImageButton
             android:id="@+id/current_exercise_action_next"
-            android:enabled="false"
-            style="@style/double_arrow_button_right" />
+            style="@style/double_arrow_button_right"
+            android:enabled="false"/>
 
     </LinearLayout>
 

@@ -4,27 +4,36 @@
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/list_item_layout">
 
-    <RadioButton
-        android:id="@+id/exercise_item_select"
-        style="@style/list_item_select"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
-
     <LinearLayout
         android:id="@+id/exercise_item_detail"
         style="@style/list_item_sub_layout"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/exercise_item_select">
+        app:layout_constraintStart_toStartOf="parent">
 
         <TextView
             android:id="@+id/exercise_item_name"
+            tools:text="Exercise"
             style="@style/list_item_text_title"/>
 
         <TextView
             android:id="@+id/exercise_item_goal"
+            tools:text="Exercise Goal"
             style="@style/list_item_text_subtext"/>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/playlist_item_action"
+        style="@style/list_item_sub_layout"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageButton
+            android:id="@+id/exercise_item_delete"
+            style="@style/list_item_action_delete" />
 
     </LinearLayout>
 

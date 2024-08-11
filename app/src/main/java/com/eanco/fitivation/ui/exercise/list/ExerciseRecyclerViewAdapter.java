@@ -3,18 +3,19 @@ package com.eanco.fitivation.ui.exercise.list;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RadioButton;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.eanco.fitivation.R;
+import com.eanco.fitivation.dal.FitivationRepository;
 import com.eanco.fitivation.ddl.model.exercise.ExerciseActivity;
-import com.eanco.fitivation.ddl.model.exercise.ExerciseDetail;
 
 import org.apache.commons.collections4.ListUtils;
 
+import java.util.Collections;
 import java.util.List;
 
 // TODO - Create FitivationRecyclerViewAdapter<T> (?)
@@ -35,16 +36,12 @@ public class ExerciseRecyclerViewAdapter extends RecyclerView.Adapter<ExerciseRe
 
     @Override
     public void onBindViewHolder(@NonNull ExerciseRecyclerViewAdapter.ViewHolder holder, int position) {
-        ExerciseDetail exercise = exercises.get(position);
-
-        holder.getItem().setOnClickListener(item -> {
-            exercise.setSelected(!exercise.getSelected());
-            holder.getSelectRadioButton().setChecked(exercise.getSelected());
-        });
+        ExerciseActivity exercise = exercises.get(position);
 
         holder.getNameTextView().setText(exercise.getName());
         holder.getGoalUnitTextView().setText(String.format("%s %s", exercise.getTargetAmount(), exercise.getUnit()));
-        holder.getSelectRadioButton().setChecked(Boolean.TRUE.equals(exercise.getSelected()));
+        holder.getDeleteButton().setOnClickListener(item ->
+                FitivationRepository.deleteAll(ExerciseActivity.class, Collections.singletonList(exercise)));
     }
 
     @Override
@@ -57,14 +54,14 @@ public class ExerciseRecyclerViewAdapter extends RecyclerView.Adapter<ExerciseRe
         private final View item;
         private final TextView nameTextView;
         private final TextView goalUnitTextView;
-        private final RadioButton selectRadioButton;
+        private final ImageButton deleteButton;
 
         public ViewHolder(@NonNull View item) {
             super(item);
             this.item = item;
             nameTextView = item.findViewById(R.id.exercise_item_name);
             goalUnitTextView = item.findViewById(R.id.exercise_item_goal);
-            selectRadioButton = item.findViewById(R.id.exercise_item_select);
+            deleteButton = item.findViewById(R.id.exercise_item_delete);
         }
 
         public View getItem() {
@@ -79,8 +76,8 @@ public class ExerciseRecyclerViewAdapter extends RecyclerView.Adapter<ExerciseRe
             return goalUnitTextView;
         }
 
-        public RadioButton getSelectRadioButton() {
-            return selectRadioButton;
+        public ImageButton getDeleteButton() {
+            return deleteButton;
         }
     }
 }
