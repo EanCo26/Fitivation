@@ -10,6 +10,7 @@
     <!--    CurrentExerciseFragment   -->
     <string name="title_exercise">Exercise</string>
     <string name="finish_exercise">Complete</string>
+    <string name="record_exercise">Record</string>
     <!--    PlaylistFragment   -->
     <string name="title_playlist">Playlist</string>
     <string name="create_playlist">Create</string>
@@ -24,10 +25,8 @@
 
     <!--    ExerciseAlertValues   -->
     <string name="alert_exercise_title">Exercise</string>
-    <string name="alert_exercise_name_hint">Name...</string>
-    <string name="alert_exercise_units_hint">Units...</string>
-    <string name="alert_exercise_target_hint">Target...</string>
-    <string name="alert_exercise_progress_hint">Progress...</string>
+    <string name="alert_exercise_progress">Progress:</string>
+    <string name="alert_exercise_recovery">Recovery:</string>
     <string name="alert_delete_title">Delete Permanently?</string>
     <string name="alert_delete_button">Delete</string>
 </resources>

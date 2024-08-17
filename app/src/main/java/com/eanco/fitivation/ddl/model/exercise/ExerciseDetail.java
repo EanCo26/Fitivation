@@ -16,6 +16,7 @@ public class ExerciseDetail extends ReadWriteModel {
     @NonNull
     private Integer progressRate;
     private String description;
+    private Integer recoveryDuration;
 
     public ExerciseDetail() {
         super();
@@ -25,13 +26,15 @@ public class ExerciseDetail extends ReadWriteModel {
                           @NonNull String unit,
                           @NonNull Integer targetAmount,
                           String description,
-                          Integer progressRate) {
+                          Integer progressRate,
+                          Integer recoveryDuration) {
         super();
         this.name = name;
         this.unit = unit;
         this.targetAmount = targetAmount;
         this.description = description;
         this.progressRate = progressRate;
+        this.recoveryDuration = recoveryDuration;
     }
 
     @NonNull
@@ -76,5 +79,12 @@ public class ExerciseDetail extends ReadWriteModel {
     public void setDescription(String description) {
         updateVersion();
         this.description = description;
+    }
+
+    public Integer getRecoveryDuration() {
+        return recoveryDuration;
+    }
+    public void setRecoveryDuration(Integer recoveryDuration) {
+        this.recoveryDuration = recoveryDuration;
     }
 }

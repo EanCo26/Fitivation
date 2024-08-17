@@ -18,6 +18,7 @@ import com.eanco.fitivation.ui.exercise.ExerciseAlert;
 
 import org.apache.commons.collections4.ListUtils;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -44,8 +45,9 @@ public class PlaylistRecyclerViewAdapter extends RecyclerView.Adapter<PlaylistRe
 
         holder.getEditImageView().setOnClickListener(item -> exerciseAlert.create(exercise, R.layout.alert_exercise_update));
         holder.getDeleteImageView().setOnClickListener(item -> exerciseAlert.create(exercise, R.layout.alert_confirm_delete));
-        holder.getAddItemButton().setOnClickListener(item ->
-                FitivationRepository.insertAll(ExerciseActivity.class, Collections.singletonList(ExerciseActivity.createExerciseActivity(exercise))));
+        holder.getAddItemButton().setOnClickListener(item -> FitivationRepository.insertAll(ExerciseActivity.class,
+                        Arrays.asList(ExerciseActivity.createExerciseActivity(exercise),
+                                ExerciseActivity.createCooldownActivity(exercise.getRecoveryDuration()))));
 
         holder.getNameTextView().setText(exercise.getName());
         holder.getGoalUnitTextView().setText(String.format("%s %s", exercise.getTargetAmount(), exercise.getUnit()));

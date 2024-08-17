@@ -21,12 +21,12 @@
         <EditText
             android:id="@+id/alert_exercise_edit_target_amount"
             style="@style/alert_edit_number_picker"
+            android:inputType="number"
             android:hint="0..." />
 
-        <EditText
+        <Spinner
             android:id="@+id/alert_exercise_edit_target_unit"
-            style="@style/alert_edit_spinner"
-            android:hint="Reps..."/>
+            style="@style/alert_edit_spinner"/>
 
     </LinearLayout>
 
@@ -40,12 +40,34 @@
         <TextView
             style="@style/alert_edit_number_picker"
             android:gravity="center"
-            android:text="Progress: " />
+            android:text="@string/alert_exercise_progress" />
 
         <EditText
             android:id="@+id/alert_exercise_edit_progress_amount"
             style="@style/alert_edit_text"
             app:layout_constraintTop_toBottomOf="@id/alert_exercise_edit_target"
+            android:inputType="number"
+            android:hint="0..." />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/alert_exercise_edit_recovery"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/alert_exercise_edit_progress">
+
+        <TextView
+            style="@style/alert_edit_number_picker"
+            android:gravity="center"
+            android:text="@string/alert_exercise_recovery" />
+
+        <EditText
+            android:id="@+id/alert_exercise_edit_recovery_time"
+            style="@style/alert_edit_text"
+            app:layout_constraintTop_toBottomOf="@id/alert_exercise_edit_target"
+            android:inputType="number"
             android:hint="0..." />
 
     </LinearLayout>
@@ -56,7 +78,7 @@
         android:text="@string/alert_update_finish"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/alert_exercise_edit_progress"/>
+        app:layout_constraintTop_toBottomOf="@id/alert_exercise_edit_recovery"/>
 
     <TextView
         android:id="@+id/alert_exercise_edit_failures"

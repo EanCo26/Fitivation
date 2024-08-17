@@ -6,7 +6,6 @@ import com.eanco.fitivation.ddl.model.ReadWriteModel;
 import com.eanco.fitivation.ddl.model.ReadModel;
 import com.eanco.fitivation.ddl.model.exercise.ExerciseActivity;
 import com.eanco.fitivation.ddl.model.exercise.ExerciseDetail;
-import com.eanco.fitivation.ddl.model.exercise.ExerciseResult;
 import com.eanco.fitivation.ddl.FitivationDatabase;
 
 import org.apache.commons.collections4.MapUtils;
@@ -33,10 +32,6 @@ public class DaoMapReduce {
             }
             else if (dbClass.equals(ExerciseActivity.class)) {
                 MAP_DAO.putIfAbsent(dbClass, db.exerciseActivityDao());
-                return MAP_DAO.get(dbClass);
-            }
-            else if (dbClass.equals(ExerciseResult.class)) {
-                MAP_DAO.putIfAbsent(dbClass, db.exerciseResultDao());
                 return MAP_DAO.get(dbClass);
             }
         }

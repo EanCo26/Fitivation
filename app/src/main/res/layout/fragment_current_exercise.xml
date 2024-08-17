@@ -44,6 +44,7 @@
         <EditText
             android:id="@+id/current_exercise_edit_text"
             style="@style/edit_text"
+            android:inputType="numberSigned"
             android:hint="0..." />
 
         <TextView
@@ -62,22 +63,27 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-<!--        TODO - disabling button does not gray it out -->
         <ImageButton
             android:id="@+id/current_exercise_action_previous"
             android:enabled="false"
             style="@style/double_arrow_button_left"/>
 
         <Button
+            android:id="@+id/current_exercise_action_record"
+            style="@style/button"
+            android:enabled="false"
+            android:backgroundTint="@color/lightRed"
+            android:text="@string/record_exercise" />
+
+        <Button
             android:id="@+id/current_exercise_action_finish"
             style="@style/button"
             android:text="@string/finish_exercise" />
 
-        <!--        TODO - disabling button does not gray it out -->
         <ImageButton
             android:id="@+id/current_exercise_action_next"
-            style="@style/double_arrow_button_right"
-            android:enabled="false"/>
+            android:enabled="false"
+            style="@style/double_arrow_button_right"/>
 
     </LinearLayout>
 

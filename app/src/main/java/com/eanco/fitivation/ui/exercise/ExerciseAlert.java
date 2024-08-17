@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.eanco.fitivation.R;
@@ -33,19 +34,29 @@ public class ExerciseAlert extends FitivationAlert {
         try {
             ExerciseDetail exerciseDetail = (ExerciseDetail) detail;
 
+            Spinner spinner = (Spinner) dialog.findViewById(R.id.alert_exercise_edit_target_unit);
+            ViewUtils.setupSpinner(spinner, context, R.array.exercise_units);
+
             if(layoutId == R.layout.alert_exercise_update) {
                 if (ObjectUtils.isNotEmpty(exerciseDetail)) {
                     EditText nameEditText = dialog.findViewById(R.id.alert_exercise_edit_name);
                     EditText goalEditText = dialog.findViewById(R.id.alert_exercise_edit_target_amount);
-                    EditText goalUnitEditText = dialog.findViewById(R.id.alert_exercise_edit_target_unit);
                     EditText progressEditText = dialog.findViewById(R.id.alert_exercise_edit_progress_amount);
+                    EditText recoveryEditText = dialog.findViewById(R.id.alert_exercise_edit_recovery_time);
 
                     nameEditText.setText(exerciseDetail.getName());
                     goalEditText.setText(exerciseDetail.getTargetAmount().toString());
-                    goalUnitEditText.setText(exerciseDetail.getUnit());
+                    ViewUtils.setSpinnerSelectionValue(spinner, exerciseDetail.getUnit());
                     progressEditText.setText(exerciseDetail.getProgressRate().toString());
+                    recoveryEditText.setText(exerciseDetail.getRecoveryDuration().toString());
                 }
             }
+        }
+        catch (Exception ex) {
+            Log.e(getClass().getName(), "setupDialog: ", ex);
+        }
+
+        try {
         }
         catch (Exception ex) {
             Log.e(getClass().getName(), "setupDialog: ", ex);
@@ -134,7 +145,8 @@ public class ExerciseAlert extends FitivationAlert {
         viewName = "Target Unit";
         try {
 
-            String unitStr = ViewUtils.getTextViewString(dialog, R.id.alert_exercise_edit_target_unit);
+            Spinner spinner = (Spinner) dialog.findViewById(R.id.alert_exercise_edit_target_unit);
+            String unitStr = ViewUtils.getSpinnerSelectionValue(spinner);
             if(!ConversionUtils.isValidAmendment(unitStr)) {
                 throw new IllegalArgumentException(String.format(failureExceptionStrFormat, viewName));
             }
@@ -160,6 +172,22 @@ public class ExerciseAlert extends FitivationAlert {
         }
         catch (Exception ex) {
             failureMap.put(R.id.alert_exercise_edit_progress_amount, String.format(failureUiStrFormat, viewName));
+            Log.e(ExerciseAlert.class.getName(), "update: ", ex);
+        }
+
+        viewName = "Recovery";
+        try {
+
+            String recoveryStr = ViewUtils.getTextViewString(dialog, R.id.alert_exercise_edit_recovery_time);
+            if(!ConversionUtils.isValidAmendment(recoveryStr)) {
+                throw new IllegalArgumentException(String.format(failureExceptionStrFormat, viewName));
+            }
+            if(ConversionUtils.isDiff(exerciseDetail.getRecoveryDuration(), ConversionUtils.convertToInteger(recoveryStr))) {
+                exerciseDetail.setRecoveryDuration(ConversionUtils.convertToInteger(recoveryStr));
+            }
+        }
+        catch (Exception ex) {
+            failureMap.put(R.id.alert_exercise_edit_recovery_time, String.format(failureUiStrFormat, viewName));
             Log.e(ExerciseAlert.class.getName(), "update: ", ex);
         }
 

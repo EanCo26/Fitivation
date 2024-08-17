@@ -68,12 +68,6 @@ public class ExerciseFragment extends Fragment {
     }
 
     private void startExercise() {
-//        FitivationRepository.updateAll(ExerciseActivity.class, activities);
-
         navController.navigate(R.id.navigation_current_exercise);
-//        FitivationRepository.insertAll(ExerciseResult.class, Collections.singletonList(new ExerciseResult(exerciseDetail)));
-//        exerciseDetail.setSelected(false);
-//        exerciseDetail.setTargetAmount(exerciseDetail.getTargetAmount() + exerciseDetail.getProgressRate());
-//        FitivationRepository.updateAll(ExerciseDetail.class, Collections.singletonList(exerciseDetail));
     }
 }

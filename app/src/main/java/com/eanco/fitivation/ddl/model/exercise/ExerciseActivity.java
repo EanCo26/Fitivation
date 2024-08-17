@@ -10,6 +10,7 @@ public class ExerciseActivity extends ExerciseDetail {
     private Boolean isActive;
     private Integer achievedAmount;
     private String achievedTime;
+    private Boolean isExercise;
 
     public ExerciseActivity() {
         super();
@@ -48,6 +49,13 @@ public class ExerciseActivity extends ExerciseDetail {
         this.achievedTime = achievedTime;
     }
 
+    public Boolean getIsExercise() {
+        return isExercise;
+    }
+    public void setIsExercise(Boolean isExercise) {
+        this.isExercise = isExercise;
+    }
+
     public void finish() {
         updateVersion();
         this.isActive = false;
@@ -62,6 +70,17 @@ public class ExerciseActivity extends ExerciseDetail {
         activity.setTargetAmount(exerciseDetail.getTargetAmount());
         activity.setUnit(exerciseDetail.getUnit());
         activity.setProgressRate(exerciseDetail.getProgressRate());
+        activity.setIsExercise(true);
+        return activity;
+    }
+
+    public static ExerciseActivity createCooldownActivity(Integer recovery) {
+        ExerciseActivity activity = new ExerciseActivity();
+        activity.setName("Cooldown");
+        activity.setTargetAmount(recovery);
+        activity.setUnit("Secs");
+        activity.setProgressRate(0);
+        activity.setIsExercise(false);
         return activity;
     }
 }
